@@ -4,11 +4,11 @@ const createHomepageTemplate = () => /*html*/`
             <title>SHOPPING LIST</title>
             <script src="https://unpkg.com/htmx.org@2.0.3" integrity="sha384-0895/pl2MU10Hqc6jd4RvrthNlDiE9U1tWmX7WRESftEDRosgxNsQG/Ze9YMRzHq" crossorigin="anonymous"></script>
 
-            <link rel="stylesheet" href="./public/styles.css">
+            <link rel="stylesheet" href="/styles.css">
         </head>
 
         <body>
-            <header style="background-color: wheat; color: red">
+            <header>
                 <h1>SHOPPING LISTS</h1>
                 <div class="header">
                     <button class="btn"
