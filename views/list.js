@@ -1,5 +1,4 @@
-// import SHOPPINGLISTS_DATA from "../data/data.js";
-// import displayCart from "./cart.js"
+import displayCart from "./cart.js"
 
 
 const displayList = (list) => /*html*/`
@@ -8,13 +7,16 @@ const displayList = (list) => /*html*/`
         <h3>${list.title}</h3>
         <p>${list.total}</p>
         <ul>
+            ${list.cart.map(cart => displayCart(cart)).join('')}
+        </ul>
+        <!-- <ul>
             ${list.cart.map((e) =>`
                 <li>
                     <p>${e.bought ? 'YES' : 'NO'}</p> // substitute YES/NO by an icon or class defining colour
                     <p>${e.item} ${e.units ? `X${e.units}` : ''}</p>
                 </li>`
                 ).join('')}
-        </ul>
+        </ul> -->
         <p>${list.weekday}</p>
         <p>${list.shop}</p>
         <form action="insertItem">

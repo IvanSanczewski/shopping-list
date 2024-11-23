@@ -1,10 +1,7 @@
-// import SHOPPINGLISTS_DATA from "../data/data.js";
-// import displayList from "./list.js";
-
 const displayCart = (cart) => /*html*/`
     <div>
-        <p>${cart.item}</p>
-        <p>${cart.bought}</p>
+        <p>${cart.item} ${cart.item ? `X${cart.units}` : ''}</p>
+        <p>${cart.bought ? 'YES' : 'no'}</p>
     </div>
 `
 
