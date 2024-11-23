@@ -20,9 +20,9 @@ app.get('/lists', (req, res) => {
     res.send(displayLists());
 });
 
-// app.get('list', (req, res) => {
-//     res.send(displayList());
-// })
+app.post('/lists', (req, res) => {
+    const {item, quantity} = req.body;
+})
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

@@ -13,14 +13,26 @@ const displayList = (list) => /*html*/`
             ${list.cart.map((e) =>`
                 <li>
                     <p>${e.bought ? 'YES' : 'NO'}</p> // substitute YES/NO by an icon or class defining colour
-                    <p>${e.item} ${e.units ? `X${e.units}` : ''}</p>
+                    <p>${e.item} ${e.units ? `x${e.units}` : ''}</p>
                 </li>`
                 ).join('')}
         </ul> -->
         <p>${list.weekday}</p>
         <p>${list.shop}</p>
-        <form action="insertItem">
-            <input type="text" name="newItem" size="20" placeholder="product">
+        <form>
+            <input 
+                type="text"
+                name="item"
+                placeholder="product"
+                size="25"
+            />
+            <input 
+                type="number"
+                name="quantity"
+                placeholder="x"
+                size="1"
+            />
+            <button hx-post="/lists">+</button>
         </form>
     </div>
 </li>
