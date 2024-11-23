@@ -1,5 +1,4 @@
-import SHOPPINGLISTS_DATA from "../data/data.js";
-import displayCart from "./cart.js";
+// import SHOPPINGLISTS_DATA from "../data/data.js";
 // import displayCart from "./cart.js"
 
 const displayList = (list) => /*html*/`
@@ -8,7 +7,7 @@ const displayList = (list) => /*html*/`
         <h3>${list.title}</h3>
         <p>${list.cart[0].item}</p>
         <p>${list.cart[0].bought}</p>
-        <p>${SHOPPINGLISTS_DATA.cart.map(cart => displayCart(cart))}</p>
+        
         <p>${list.total}</p>
         <p>${list.weekday}</p>
         <p>${list.shop}</p>
