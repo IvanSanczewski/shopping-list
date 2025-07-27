@@ -13,14 +13,6 @@ const displayList = (list) => /*html*/`
         <ul>
             ${list.cart.map(cart => displayCart(cart)).join('')}
         </ul>
-        <!-- <ul>
-            ${list.cart.map((e) =>`
-            <li>
-                <p>${e.bought ? 'YES' : 'NO'}</p> // substitute YES/NO by an icon or class defining colour
-                <p>${e.item} ${e.units ? `x${e.units}` : ''}</p>
-            </li>`
-            ).join('')}
-        </ul> -->
         <p>${list.weekday}</p>
         <p>${list.shop}</p>
         <form>

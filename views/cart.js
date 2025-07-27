@@ -1,8 +1,12 @@
-const displayCart = (cart) => /*html*/`
+const displayCart = (cart, listID, cartIndex) => /*html*/`
     <div>
-        <p>${cart.item} ${cart.item ? `X${cart.units}` : ''}</p>
-        <p>${cart.bought ? 'YES' : 'no'}</p>
-        <p>-</p>
+       <span
+            class="item ${cart.bought} ? 'in-cart' : 'out-cart'"
+            hx-post="/toggle-item"
+            hx-vals='{"myVal$": "My Value"}'
+       >
+
+       </span>
     </div>
 `
 
