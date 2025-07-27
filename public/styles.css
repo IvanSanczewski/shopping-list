@@ -1,8 +1,11 @@
-body {
+* {
     margin: 0;
     padding: 0;
+}
 
-    background-color: rgb(45, 47, 63);
+body {
+    color: rgb(232, 232, 232);
+    background-color: rgb(97, 142, 111);
 }
 
 header {
@@ -12,11 +15,53 @@ header {
     color: #fafafa;
 }
 
-.list-card {
-    margin: 1em;
+
+li {
+    list-style-type: none;
+    margin: 0;
+}
+
+/* C A R D S */
+
+.cards-container {
+    display: flex;
+    flex-direction: row wrap;
+    justify-content: space-evenly;
+
+    padding: 0;
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+
+    max-width: 40vw;
+}
+
+.card-title {
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    gap: 2em;
+
+    padding: .5em;
+
+    background-color: rgb(49, 50, 78);
+
+    border-top-left-radius: 1em;
+    border-top-right-radius: 1em;
+}
+
+.card-list {
     padding: 1em;
-    border-radius: 1em;
-    
+
     color: aliceblue;
     background-color: rgb(21, 22, 34);
+    
+    border-bottom-left-radius: 1em;
+    border-bottom-right-radius: 1em;
+}
+
+h3 {
+    text-transform: uppercase;
 }

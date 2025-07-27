@@ -12,7 +12,7 @@ const createHomepageTemplate = () => /*html*/`
                 <h1>SHOPPING LISTS</h1>
                 <div class="header">
                     <button class="btn"
-                        hx-get="/lists"
+                        hx-get="/cards"
                         hx-target="#shopping-lists"
                         >Load lists
                     </button>
@@ -21,36 +21,8 @@ const createHomepageTemplate = () => /*html*/`
 
             <main>
                 <div id="shopping-lists" class="shopping-lists" >
-                    <ul class="lists">
-                        <li class="shopping-list-card">
-                            <h3>list {shoppingList.name}</h3>
-                            <p>price EUR</p>
-                            <span>expand false/true</span>
-                            <span>completed false/true</span>
-                            <p>---------</p>
-                            <ul>
-                                <li class="sl-item">
-                                    <p>potatos</p>
-                                    <span>units</span>
-                                    <span>delete item</span>
-                                    <span>bought ture/fals</span>
-                                </li>
-                                <li class="sl-item">
-                                    <p>kefyr</p>
-                                    <span>units</span>
-                                    <span>delete item</span>
-                                    <span>bought ture/fals</span>
-                                </li>
-                                <li class="sl-item">
-                                    <p>walnuts</p>
-                                    <span>units</span>
-                                    <span>delete item</span>
-                                    <span>bought ture/fals</span>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
+                   
+                </div> 
             </main>
 
             <footer>
