@@ -11,7 +11,7 @@ const displayList = (list) => /*html*/`
     
     <div class="card-list">
         <ul>
-            ${list.cart.map(cart => displayCart(cart)).join('')}
+            ${list.cart.map((cart, index) => displayCart(cart, list.id, index)).join('')}
         </ul>
         <p>${list.weekday}</p>
         <p>${list.shop}</p>

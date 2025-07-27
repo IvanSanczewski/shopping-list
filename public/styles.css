@@ -65,3 +65,36 @@ li {
 h3 {
     text-transform: uppercase;
 }
+
+/* C A R T   I T E M S */
+
+.cart-item {
+    padding: 0.5em;
+    margin: 0.2em 0;
+    border-radius: 0.3em;
+    transition: background-color 0.3s ease;
+}
+
+.cart-item:hover {
+    opacity: 0.8;
+}
+
+.out-cart {
+    background-color: crimson;
+    color: white;
+}
+
+.in-cart {
+    background-color: green;
+    color: white;
+    text-decoration: line-through;
+}
+
+.item-name {
+    font-weight: bold;
+}
+
+.item-units {
+    margin-left: 0.5em;
+    font-style: italic;
+}
