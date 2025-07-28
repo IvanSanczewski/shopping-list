@@ -80,14 +80,13 @@ h3 {
 }
 
 .out-cart {
-    background-color: crimson;
+    background-color: rgb(232, 61, 95);
     color: white;
 }
 
 .in-cart {
-    background-color: green;
+    background-color: rgb(88, 169, 88);
     color: white;
-    text-decoration: line-through;
 }
 
 .item-name {
