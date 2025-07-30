@@ -13,9 +13,8 @@ const displayList = (list) => /*html*/`
         <ul>
             ${list.cart.map((cart, index) => displayCart(cart, list.id, index)).join('')}
         </ul>
-        <p>${list.weekday}</p>
-        <p>${list.shop}</p>
-        <form>
+        <p>${list.weekday} - ${list.shop}</p>
+        <form class="new-product">
             <input 
             type="text"
             name="item"

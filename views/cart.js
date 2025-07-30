@@ -8,7 +8,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
         style="cursor: pointer;"
     >
         <span class="item-name">${cart.item}</span>
-        ${cart.units ? `<span class="item-units">(${cart.units})</span>` : ''}
+        ${cart.units ? `<span class="item-units">${cart.units}</span>` : ''}
     </li>
 `
 
