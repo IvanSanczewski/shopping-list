@@ -26,7 +26,7 @@ const SHOPPINGLISTS_DATA = [
         ],
         total: 33.18,
         weekday: 'Wednesday',     
-    },
+    }
 ];
 
 export default SHOPPINGLISTS_DATA;

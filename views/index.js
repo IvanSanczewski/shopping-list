@@ -10,19 +10,16 @@ const createHomepageTemplate = () => /*html*/`
         <body>
             <header>
                 <h1>SHOPPING LISTS</h1>
-                <div class="header">
-                    <button class="btn"
+            </header>
+            
+            <main>
+                <div id="shopping-lists-container">
+                    <button class="btn-load"
                         hx-get="/cards"
-                        hx-target="#shopping-lists"
+                        hx-target="#shopping-lists-container"
                         >Load lists
                     </button>
                 </div>
-            </header>
-
-            <main>
-                <div id="shopping-lists" class="shopping-lists" >
-                   
-                </div> 
             </main>
 
             <footer>

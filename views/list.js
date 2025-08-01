@@ -27,7 +27,10 @@ const displayList = (list) => /*html*/`
             placeholder="x"
             size="1"
             />
-            <button hx-post="/lists">+</button>
+            <button 
+                hx-post="/lists"
+            >Add Product
+            </button>
         </form>
     </div>
 </li>`
