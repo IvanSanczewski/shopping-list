@@ -17,7 +17,7 @@ const displayList = (list) => /*html*/`
         <form class="new-product">
             <input 
             type="text"
-            name="item"
+            name="product"
             placeholder="product"
             size="25"
             />
@@ -28,7 +28,10 @@ const displayList = (list) => /*html*/`
             size="1"
             />
             <button 
-                hx-post="/lists"
+                hx-post="/cart"
+                hx-vals='{"listID": "${list.id}"}'
+                hx-target="[data-id='${list.id}'] ul"
+                hx-swap="beforeend"
             >Add Product
             </button>
         </form>

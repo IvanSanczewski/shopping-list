@@ -3,7 +3,7 @@ import createHomepageTemplate from './views/index.js';
 import displayLists from './views/cards.js';
 import displayCart from './views/cart.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
-// import displayList from './views/list.js';
+import displayList from './views/list.js';
 
 // import exp from 'constants';
 // import { urlencoded } from 'body-parser';
@@ -24,10 +24,29 @@ app.get('/cards', (req, res) => {
     res.send(displayLists());
 });
 
-// Adds shopping items to any card from cards.js
-app.post('/cards', (req, res) => {
-    const {item, quantity} = req.body;
-    // Add logic here to handle new items
+// Adds shopping items its cart
+app.post('/cart', (req, res) => {
+    const {listID, product, quantity} = req.body;
+    
+    // References the obbject in the DATA array according to list.id
+    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
+
+
+    if (product && quantity) {
+        const newProduct = {
+            item: product,
+            bought: false,
+            units: quantity
+        };
+        list.cart.push(newProduct);
+
+        // Params listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
+        res.send(displayCart(newProduct, listID, list.cart.length -1));
+
+    } else {
+        res.status(404).send('Add product & quantity');
+    }
+    
 })
 
 // Toggle item bought status - HTMX endpoint
