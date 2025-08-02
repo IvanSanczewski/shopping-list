@@ -2,7 +2,7 @@ import express from 'express';
 import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
-import displayLists from './views/cards.js';
+import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
 import displayList from './views/list.js';
@@ -12,7 +12,7 @@ import displayList from './views/list.js';
 // import { urlencoded } from 'body-parser';
 
 const app = express();
-const PORT = process.env.PORT || 3000; 
+const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static('public'));
@@ -24,13 +24,13 @@ app.get('/', (req, res) => {
 
 // Loads all the shopping lists from cards.js
 app.get('/cards', (req, res) => {
-    res.send(displayLists());
+    res.send(displayCards());
 });
 
 // Adds shopping items its cart
 app.post('/cart', (req, res) => {
     const {listID, product, quantity} = req.body;
-    
+
     // References the obbject in the DATA array according to list.id
     const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
 
@@ -42,10 +42,7 @@ app.post('/cart', (req, res) => {
             units: quantity
         };
         list.cart.push(newProduct);
-        const now = new Date();
-        
-        const actualWeek = format(now, 'ww');
-        console.log(actualWeek);
+        // SHOPPINGLISTS_DATA.cart.push(newProduct);
 
         // Params listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
         res.send(displayCart(newProduct, listID, list.cart.length -1));
@@ -56,21 +53,46 @@ app.post('/cart', (req, res) => {
     
 });
 
-// app.post('/cards', (req, res) => {
-// });
+app.post('/cards', (req, res) => {
+    const {shop} = req.body;
+    const lists = SHOPPINGLISTS_DATA
+    
+    const now = new Date();
+    const actualWeek = format(now, 'ww');
+    const actualYear = format(now, 'yy')
+    console.log(actualWeek, actualYear);
+    
+    if (lists.map(list => list.id === '${actualWeek}_${actualYear}')) {
+        const newList = {
+            id: '${actualWeek}_${actualYear}',
+            title: 'Week ${actualWeek}',
+            shop: shop,
+            cart: [],
+            total: 20.69,
+            weekday: 'Wednesday'
+        };
+        
+        lists.push(newList);
+
+        res.send(displayCards());
+        
+    } else {
+        res.status(404).send('There is already a shopping list for this week. You can edit it or delete it and then create a new one.');
+    }
+});
 
 // Toggle item bought status - HTMX endpoint
 app.post('/toggle-item', (req, res) => {
     // Extract the listID and cartIndex from the request body
     const { listID, cartIndex } = req.body;
-    
+
     // Find the specific shopping list by ID
     const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    
+
     if (list && list.cart[cartIndex]) {
         // Toggle the bought status of the specific item
         list.cart[cartIndex].bought = !list.cart[cartIndex].bought;
-        
+
         // Send back the updated cart item HTML
         res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
     } else {

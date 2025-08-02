@@ -7,18 +7,12 @@ const displayCards = () => /*html*/`
         ${SHOPPINGLISTS_DATA.map(list => displayList(list)).join('')}
     </ul>
     
-    <form class="new-week"> //TODO: implement data with Date object
+    <form class="new-week">
         <input 
         type="text"
-        name="week"
-        placeholder="week"
+        name="shop"
+        placeholder="shop"
         size="25"
-        />
-        <input 
-        type="number"
-        name="year"
-        placeholder="year"
-        size="2"
         />
         <button class="add-list"
             hx-post="/cards"
