@@ -27,7 +27,7 @@ const displayList = (list) => /*html*/`
             placeholder="x"
             size="1"
             />
-            <button 
+            <button class="add-product"
                 hx-post="/cart"
                 hx-vals='{"listID": "${list.id}"}'
                 hx-target="[data-id='${list.id}'] ul"

@@ -20,7 +20,12 @@ const displayCards = () => /*html*/`
         placeholder="year"
         size="2"
         />
-        <button hx-post="/lists">Add List</button>
+        <button class="add-list"
+            hx-post="/cards"
+            hx-target=".cards-container"
+            hx-swap="beforeend"
+        >Add List
+        </button>
     </form>
 
 ` 

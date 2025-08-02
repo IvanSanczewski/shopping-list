@@ -1,9 +1,12 @@
 import express from 'express';
+import { format } from 'date-fns';
+
 import createHomepageTemplate from './views/index.js';
 import displayLists from './views/cards.js';
 import displayCart from './views/cart.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
 import displayList from './views/list.js';
+
 
 // import exp from 'constants';
 // import { urlencoded } from 'body-parser';
@@ -39,6 +42,10 @@ app.post('/cart', (req, res) => {
             units: quantity
         };
         list.cart.push(newProduct);
+        const now = new Date();
+        
+        const actualWeek = format(now, 'ww');
+        console.log(actualWeek);
 
         // Params listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
         res.send(displayCart(newProduct, listID, list.cart.length -1));
@@ -47,7 +54,10 @@ app.post('/cart', (req, res) => {
         res.status(404).send('Add product & quantity');
     }
     
-})
+});
+
+// app.post('/cards', (req, res) => {
+// });
 
 // Toggle item bought status - HTMX endpoint
 app.post('/toggle-item', (req, res) => {
