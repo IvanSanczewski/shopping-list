@@ -14,10 +14,10 @@ const displayCards = () => /*html*/`
         placeholder="shop"
         size="25"
         />
+        //TODO: Add checkbox 'This week's list'
         <button class="add-list"
             hx-post="/cards"
-            hx-target=".cards-container"
-            hx-swap="beforeend"
+            hx-target="#shopping-lists-container"
         >Add List
         </button>
     </form>

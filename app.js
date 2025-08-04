@@ -59,13 +59,16 @@ app.post('/cards', (req, res) => {
     
     const now = new Date();
     const actualWeek = format(now, 'ww');
-    const actualYear = format(now, 'yy')
-    console.log(actualWeek, actualYear);
+    const actualYear = format(now, 'yy');
+    const actualWeekDay = format(now, 'i');
     
-    if (lists.map(list => list.id === '${actualWeek}_${actualYear}')) {
+    let weekId = actualWeekDay === '7' ? actualWeek -1 : actualWeek;
+    let thisWeekList = true;
+
+    if (!lists.find(list => list.id === `${actualWeek}_${actualYear}`)) {
         const newList = {
-            id: '${actualWeek}_${actualYear}',
-            title: 'Week ${actualWeek}',
+            id: `${actualWeek}_${actualYear}`,
+            title: `Week ${weekId}`,
             shop: shop,
             cart: [],
             total: 20.69,
@@ -73,10 +76,11 @@ app.post('/cards', (req, res) => {
         };
         
         lists.push(newList);
-
-        res.send(displayCards());
+        
+        res.send(displayCards(newList));
         
     } else {
+        console.log('list exists');
         res.status(404).send('There is already a shopping list for this week. You can edit it or delete it and then create a new one.');
     }
 });

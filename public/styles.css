@@ -31,7 +31,6 @@ main {
     width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
 }
 
 li {
@@ -47,6 +46,10 @@ footer {
 
 .btn-load {
     margin: 0 auto;
+}
+
+.new-week {
+    align-self: center;
 }
 
 /* C A R D S */
