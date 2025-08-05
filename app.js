@@ -54,7 +54,7 @@ app.post('/cart', (req, res) => {
 });
 
 app.post('/cards', (req, res) => {
-    const {shop} = req.body;
+    const {shop, nextWeekList} = req.body;
     const lists = SHOPPINGLISTS_DATA
     
     const now = new Date();
@@ -62,12 +62,26 @@ app.post('/cards', (req, res) => {
     const actualYear = format(now, 'yy');
     const actualWeekDay = format(now, 'i');
     
-    let weekId = actualWeekDay === '7' ? actualWeek -1 : actualWeek;
-    let thisWeekList = true;
+    console.log('65 actualWeekDay:', actualWeekDay);
 
-    if (!lists.find(list => list.id === `${actualWeek}_${actualYear}`)) {
+    let isNextWeek;
+    (nextWeekList)? isNextWeek = true : isNextWeek = false ;
+    
+    let weekId = (actualWeekDay === '7') ? Number(actualWeek -1) : Number(actualWeek);
+    console.log('71 weekId:', weekId, typeof weekId);    
+    
+    if (isNextWeek) { 
+        weekId+= 1
+        console.log('IF HAPPENS');
+    }
+    
+    console.log('75 nextWeekList:', nextWeekList, typeof nextWeekList);    
+    console.log('76 isNextWeek:', isNextWeek, typeof isNextWeek);    
+    console.log('77 weekId:', weekId, typeof weekId);    
+
+    if (!lists.find(list => list.id === `${weekId}_${actualYear}`)) {
         const newList = {
-            id: `${actualWeek}_${actualYear}`,
+            id: `${weekId}_${actualYear}`,
             title: `Week ${weekId}`,
             shop: shop,
             cart: [],
