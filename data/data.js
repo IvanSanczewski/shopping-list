@@ -15,7 +15,7 @@ const SHOPPINGLISTS_DATA = [
     },
     {
         id: '46_24',
-        title: 'Week 46',
+        title: 'Week 26',
         shop: 'Hales Turgus',
         cart: [
             {item: 'carrots', bought: false, units: 3},

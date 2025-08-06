@@ -4,7 +4,11 @@ import displayList from "./list.js";
 const displayCards = () => /*html*/`
                    
     <ul class="cards-container">
-        ${SHOPPINGLISTS_DATA.map(list => displayList(list)).join('')}
+        ${SHOPPINGLISTS_DATA
+            .sort((a,z) => z.title.localeCompare(a.title))
+            .map(list => displayList(list)).join('')
+        }
+        <!-- ${SHOPPINGLISTS_DATA.map(list => displayList(list)).join('')} -->
     </ul>
     
     <form class="new-week">
@@ -19,6 +23,7 @@ const displayCards = () => /*html*/`
         name="nextWeekList"
         value=true
         />
+        <label for="nextWeekList">Shopping list for next week</label>
         <button class="add-list"
             hx-post="/cards"
             hx-target="#shopping-lists-container"
