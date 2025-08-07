@@ -8,7 +8,6 @@ const displayCards = () => /*html*/`
             .sort((a,z) => z.title.localeCompare(a.title))
             .map(list => displayList(list)).join('')
         }
-        <!-- ${SHOPPINGLISTS_DATA.map(list => displayList(list)).join('')} -->
     </ul>
     
     <form class="new-week">

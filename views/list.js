@@ -6,7 +6,19 @@ const displayList = (list) => /*html*/`
 <li class="card" data-id="${list.id}">
     <div class="card-title">
         <h3>${list.title}</h3>
-        <p>${list.total} EUR</p>
+        <form class="price">
+            <input 
+                type="number"
+                name="price"
+            >
+            <button class="add-price"
+                hx-post="/list"
+                hx-target=".card"
+                hx-vals='{"listID": "${list.id}"}'
+            >Add Price
+            </button>
+        </form>
+        <p>EUR</p>
     </div>
     
     <div class="card-list">
@@ -16,16 +28,16 @@ const displayList = (list) => /*html*/`
         <p>${list.weekday} - ${list.shop}</p>
         <form class="new-product">
             <input 
-            type="text"
-            name="product"
-            placeholder="product"
-            size="25"
+                type="text"
+                name="product"
+                placeholder="product"
+                size="25"
             />
             <input 
-            type="number"
-            name="quantity"
-            placeholder="x"
-            size="1"
+                type="number"
+                name="quantity"
+                placeholder="x"
+                size="1"
             />
             <button class="add-product"
                 hx-post="/cart"

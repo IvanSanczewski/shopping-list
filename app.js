@@ -99,6 +99,24 @@ app.post('/cards', (req, res) => {
     }
 });
 
+
+// Adds price to the cart
+app.post('/list', (req, res) => {
+    const {listID, price} = req.body;
+
+    const newPrice = Number(price)
+    
+    // References the obbject in the DATA array according to list.id
+    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
+    
+    if (price) {
+        list.total = newPrice
+    }
+
+    res.send(displayList(list));
+});
+
+
 // Toggle item bought status - HTMX endpoint
 app.post('/toggle-item', (req, res) => {
     // Extract the listID and cartIndex from the request body
