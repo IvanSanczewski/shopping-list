@@ -10,7 +10,7 @@ const SHOPPINGLISTS_DATA = [
             {item: 'avocados', bought: true, units: 2},
             {item: 'carrots', bought: false, units: 3},
         ],
-        total: 22.18,
+        total: null,
         weekday: 'Monday',     
     },
     {
@@ -24,7 +24,7 @@ const SHOPPINGLISTS_DATA = [
             {item: 'bananas', bought: false, units: 2},
             {item: 'soup', bought: false, units: 1},
         ],
-        total: 33.18,
+        total: null,
         weekday: 'Wednesday',     
     }
 ];

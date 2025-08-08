@@ -1,14 +1,11 @@
 import displayCart from "./cart.js"
 
-
 const displayList = (list) => /*html*/`
-
 <li class="card" data-id="${list.id}">
     <div class="card-title">
         <h3>${list.title}</h3>
         ${list.total ? 
-            /*html*/`
-            <div class="price-display">
+            /*html*/`<div class="price-display">
                 <span class="price-value">${list.total}</span>
                 <button class="edit-price"
                     hx-post="/edit-price"
@@ -16,10 +13,8 @@ const displayList = (list) => /*html*/`
                     hx-vals='{"listID": "${list.id}"}'>
                     Edit
                 </button>
-            </div>`
-        :
-            /*html*/`
-            <form class="price">
+            </div>` :
+            /*html*/`<form class="price">
                 <input 
                     type="number"
                     name="price"
@@ -59,8 +54,8 @@ const displayList = (list) => /*html*/`
                 hx-post="/cart"
                 hx-vals='{"listID": "${list.id}"}'
                 hx-target="[data-id='${list.id}'] ul"
-                hx-swap="beforeend"
-            >Add Product
+                hx-swap="beforeend">
+                Add Product
             </button>
         </form>
     </div>
