@@ -12,9 +12,11 @@ import displayList from './views/list.js';
 // import { urlencoded } from 'body-parser';
 
 const app = express();
+app.use(express.json())
 const PORT = process.env.PORT || 3000;
 
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 app.use(express.static('public'));
 
 // Calls the homepage from index.js
@@ -33,7 +35,6 @@ app.post('/cart', (req, res) => {
 
     // References the obbject in the DATA array according to list.id
     const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-
 
     if (product && quantity) {
         const newProduct = {
@@ -103,11 +104,14 @@ app.post('/cards', (req, res) => {
 // Adds price to the cart
 app.post('/list', (req, res) => {
     const {listID, price} = req.body;
+    console.log('104 - listID:', listID, typeof listID );
+    console.log('106 - price:', price, typeof price );
 
     const newPrice = Number(price)
     
     // References the obbject in the DATA array according to list.id
     const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
+    console.log(list);
     
     if (price) {
         list.total = newPrice
@@ -118,21 +122,44 @@ app.post('/list', (req, res) => {
 
 
 // Toggle item bought status - HTMX endpoint
-app.post('/toggle-item', (req, res) => {
+app.post('/toggle-item-status', (req, res) => {
     // Extract the listID and cartIndex from the request body
     const { listID, cartIndex } = req.body;
 
     // Find the specific shopping list by ID
     const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-
+    
     if (list && list.cart[cartIndex]) {
         // Toggle the bought status of the specific item
         list.cart[cartIndex].bought = !list.cart[cartIndex].bought;
-
+        
         // Send back the updated cart item HTML
         res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
     } else {
         // Send error response if item not found
+        res.status(404).send('Item not found');
+    }
+});
+
+
+// Delete item using URL parameters
+app.delete('/delete-product/:listID/:cartIndex', (req, res) => {
+    const {listID, cartIndex} = req.params;
+    console.log('DELETE - listID:', listID, typeof listID);
+    console.log('DELETE - cartIndex:', cartIndex, typeof cartIndex);
+    
+    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
+    console.log('DELETE - list found:', list);
+    
+    const indexNumber = parseInt(cartIndex);
+    
+    if (list && list.cart[indexNumber] !== undefined) {
+        console.log('Before deletion:', list.cart);
+        list.cart.splice(indexNumber, 1);
+        console.log('After deletion:', list.cart);
+        res.send('');
+    } else {
+        console.log('Error: List or item not found');
         res.status(404).send('Item not found');
     }
 });

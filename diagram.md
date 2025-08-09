@@ -101,3 +101,5 @@
 5.  hx-target="this" - Replace the clicked element itself
 6.  hx-swap="outerHTML" - How to replace content
     Key Concept: Server returns HTML fragments, not JSON!
+
+res.send(displayCart(cart, listID, cartIndex))
