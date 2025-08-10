@@ -141,6 +141,7 @@ app.post('/toggle-item-status', (req, res) => {
     }
 });
 
+// ***** D E L E T E  *****
 
 // Delete item using URL parameters
 app.delete('/delete-product/:listID/:cartIndex', (req, res) => {
@@ -167,13 +168,30 @@ app.delete('/delete-product/:listID/:cartIndex', (req, res) => {
 
 // Delete shopping list
 app.delete('/delete-list/:id', (req, res) => {
-    const { id } = req.params 
+    const { id } = req.params;
     
-    const list = SHOPPINGLISTS_DATA
+    const list = SHOPPINGLISTS_DATA;
     const index = SHOPPINGLISTS_DATA.findIndex(list => list.id === id);
     list.splice(index, 1)
-
+    
     res.send('');
+});
+
+// ***** U P D A T E  *****
+
+// Update price
+app.put('/price/edit/:id', (req, res) => {
+    const { price } = req.body;
+    const { id } = req.params;
+    
+    console.log('187', price, id);
+    
+    const list = SHOPPINGLISTS_DATA;
+    const index = SHOPPINGLISTS_DATA.findIndex(list => list.id === id);
+    
+    list[index].total = price;
+
+    console.log('194 - ', list[index]);
 });
 
 app.listen(PORT, () => {

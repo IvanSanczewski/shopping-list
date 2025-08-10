@@ -9,16 +9,19 @@ return /*html*/`
         <h3>${list.title}</h3>
         ${list.total ? 
             /*html*/`
-            <div class="price-display">
-                <span class="price-value">${list.total}</span>
+            <form class="price-edit"
+                hx-put="price/edit/${list.id}"
+
+            >
+                <input 
+                    type="number"
+                    name="price"
+                    step="0.25"
+                    placeholder="${list.total}"
+                >
                 <p>EUR</p>
-                <button class="edit-price"
-                    hx-post="/edit-price"
-                    hx-target=".price-display"
-                    hx-vals='{"listID": "${list.id}"}'>
-                    Edit
-                </button>
-            </div>`
+                <button>Edit</button>
+            </form>`
         :
             /*html*/`
             <form class="price">
