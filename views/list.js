@@ -1,8 +1,9 @@
 import displayCart from "./cart.js"
 
+const displayList = (list) => {
 
-const displayList = (list) => /*html*/`
-
+    console.log('5 - list.id: ', list.id, typeof list.id);
+return /*html*/`
 <li class="card" data-id="${list.id}">
     <div class="card-title">
         <h3>${list.title}</h3>
@@ -10,6 +11,7 @@ const displayList = (list) => /*html*/`
             /*html*/`
             <div class="price-display">
                 <span class="price-value">${list.total}</span>
+                <p>EUR</p>
                 <button class="edit-price"
                     hx-post="/edit-price"
                     hx-target=".price-display"
@@ -23,25 +25,23 @@ const displayList = (list) => /*html*/`
                 <input 
                     type="number"
                     name="price"
-                    step="0.01"
+                    step="0.25"
                     placeholder="0.00"
                 >
                 <button class="add-price"
                     hx-post="/list"
-                    hx-target=".card"
+                    hx-target="[data-id='${list.id}']"
                     hx-vals='{"listID": "${list.id}"}'>
                     Add Price
                 </button>
             </form>`
         }
-        <p>EUR</p>
     </div>
     
     <div class="card-list">
         <ul>
             ${list.cart.map((cart, index) => displayCart(cart, list.id, index)).join('')}
         </ul>
-        <p>${list.weekday} - ${list.shop}</p>
         <form class="new-product">
             <input 
                 type="text"
@@ -55,6 +55,7 @@ const displayList = (list) => /*html*/`
                 placeholder="x"
                 size="1"
             />
+            FIXME: Delete product & quantity after add button
             <button class="add-product"
                 hx-post="/cart"
                 hx-vals='{"listID": "${list.id}"}'
@@ -62,8 +63,17 @@ const displayList = (list) => /*html*/`
                 hx-swap="beforeend"
             >Add Product
             </button>
+            
         </form>
+        <p>${list.weekday} - ${list.shop}</p>
+        <button class="delete-list"
+            hx-delete="/delete-list/${list.id}"
+            hx-target="closest li"
+            hx-swap="outerHTML"
+        >Delete list
+        </button>
     </div>
-</li>`
+</li>`;
+}
 
 export default displayList;

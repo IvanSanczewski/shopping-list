@@ -164,6 +164,18 @@ app.delete('/delete-product/:listID/:cartIndex', (req, res) => {
     }
 });
 
+
+// Delete shopping list
+app.delete('/delete-list/:id', (req, res) => {
+    const { id } = req.params 
+    
+    const list = SHOPPINGLISTS_DATA
+    const index = SHOPPINGLISTS_DATA.findIndex(list => list.id === id);
+    list.splice(index, 1)
+
+    res.send('');
+});
+
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);
 });

@@ -11,7 +11,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
         <span class="item-name">${cart.item}</span>
         ${cart.units ? `<span class="item-units">${cart.units}</span>` : ''}
        
-        <button class="dlt-item"
+        <button class="delete-item"
             hx-delete="/delete-product/${listID}/${cartIndex}"
             hx-target="closest li"
             hx-swap="outerHTML"
