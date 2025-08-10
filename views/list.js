@@ -11,8 +11,8 @@ return /*html*/`
             /*html*/`
             <form class="price-edit"
                 hx-put="price/edit/${list.id}"
-
-            >
+                hx-target="closest li"
+                hx-swap="outerHTML"            >
                 <input 
                     type="number"
                     name="price"

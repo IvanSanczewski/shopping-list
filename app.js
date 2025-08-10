@@ -111,11 +111,11 @@ app.post('/list', (req, res) => {
     
     // References the obbject in the DATA array according to list.id
     const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    console.log(list);
     
     if (price) {
         list.total = newPrice
     }
+    console.log('118 - ', list);
 
     res.send(displayList(list));
 });
@@ -191,7 +191,10 @@ app.put('/price/edit/:id', (req, res) => {
     
     list[index].total = price;
 
-    console.log('194 - ', list[index]);
+    console.log('194 OBJECT - ', list[index]);
+    console.log('195 ARRAY - ', list);
+
+    res.send(displayList(list[index]))
 });
 
 app.listen(PORT, () => {
