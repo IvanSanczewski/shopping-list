@@ -6,6 +6,7 @@ import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
 import displayList from './views/list.js';
+import displayQuantity from './views/quantity.js';
 
 
 // import exp from 'constants';
@@ -145,7 +146,7 @@ app.post('/toggle-item-status', (req, res) => {
 
 // Delete item using URL parameters
 app.delete('/delete-product/:listID/:cartIndex', (req, res) => {
-    const {listID, cartIndex} = req.params;
+    const { listID, cartIndex } = req.params;
     console.log('DELETE - listID:', listID, typeof listID);
     console.log('DELETE - cartIndex:', cartIndex, typeof cartIndex);
     
@@ -196,6 +197,20 @@ app.put('/price/edit/:id', (req, res) => {
 
     res.send(displayList(list[index]))
 });
+
+
+app.get('/edit-quantity/:listID/:cartIndex/:quantity', (req, res)=> {
+    console.log('EDIT UNITS');
+    const { listID, cartIndex, quantity } = req.params;
+
+    console.log('207 - index: ', cartIndex);
+    console.log('208 - ID: ', listID);
+    console.log('209 - quantity: ', quantity);
+
+    res.send(displayQuantity(quantity));
+});
+   
+
 
 app.listen(PORT, () => {
     console.log(`App listening on port ${PORT}`);

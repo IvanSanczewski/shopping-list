@@ -1,22 +1,42 @@
 const displayCart = (cart, listID, cartIndex) => /*html*/`
-    <li 
-        class="cart-item ${cart.bought ? 'in-cart' : 'out-cart'}"
+    <li class="cart-item ${cart.bought ? 'in-cart' : 'out-cart'}">
+        <span class="item-name"
             hx-post="/toggle-item-status"
             hx-vals='{"listID": "${listID}", "cartIndex": ${cartIndex}}'
-            hx-target="this"
+            hx-target="closest li"
             hx-swap="outerHTML"
             style="cursor: pointer;"
-        FIXME: implement toggle function on item name only (in spam vs this.span) WHAT IS THIS
-        >
-        <span class="item-name">${cart.item}</span>
-        ${cart.units ? `<span class="item-units">${cart.units}</span>` : ''}
-       
+        >${cart.item}</span>
+
+        ${cart.units ?
+            `<span class="item-units"   
+                hx-get="/edit-quantity/${listID}/${cartIndex}/${cart.units}"
+                hx-target="this"
+                hx-swap="outerHTML"
+                style="cursor: pointer;"
+                title="Click to edit quantity"
+            >${cart.units}</span>` 
+        : 
+            `<span class="item-units"
+                hx-get="/edit-quantity/${listID}/${cartIndex}/${cart.units}"
+                hx-target="this"
+                hx-swap="outerHTML"
+                style="cursor: pointer;"
+                title="Click to add quantity"
+            >-</span>`
+        }
+        
+        <button class="edit-name-btn"
+            hx-get="/edit-name-form/${listID}/${cartIndex}"
+            hx-target=".item-name"
+            hx-swap="outerHTML"
+        >Edit Name</button>
+
         <button class="delete-item"
             hx-delete="/delete-product/${listID}/${cartIndex}"
             hx-target="closest li"
             hx-swap="outerHTML"
-        >Delete Product
-        </button>
+        >Delete Product</button>
     </li>
 `
 
