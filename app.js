@@ -93,7 +93,7 @@ app.post('/cards', (req, res) => {
         
         lists.push(newList);
         
-        res.send(displayCards(newList));
+        res.send(displayCards());
         
     } else {
         console.log('list exists');
@@ -202,14 +202,32 @@ app.put('/price/edit/:id', (req, res) => {
 app.get('/edit-quantity/:listID/:cartIndex/:quantity', (req, res)=> {
     console.log('EDIT UNITS');
     const { listID, cartIndex, quantity } = req.params;
-
+    
     console.log('207 - index: ', cartIndex);
     console.log('208 - ID: ', listID);
     console.log('209 - quantity: ', quantity);
-
-    res.send(displayQuantity(quantity));
+    
+    res.send(displayQuantity(quantity, listID, cartIndex));
 });
-   
+
+
+app.put('/edit-quantity/:id/:index', (req, res)=> {
+    const { newQuantity } = req.body;
+    const { id, index } = req.params;
+
+    const list = SHOPPINGLISTS_DATA.find(list => list.id === id);
+    
+    console.log('list: ', list);
+    console.log('newQuantity: ', newQuantity);
+    console.log('id: ', id);
+    console.log('index: ', index);
+    
+    const productWithNewQuantity = list.cart[index];
+    list.cart[index].units = newQuantity;
+    console.log('productWithNewQuantity: ', productWithNewQuantity);
+    
+    res.send(displayCart(productWithNewQuantity, id, index));
+});
 
 
 app.listen(PORT, () => {

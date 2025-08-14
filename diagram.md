@@ -102,40 +102,23 @@
 6.  hx-swap="outerHTML" - How to replace content
     Key Concept: Server returns HTML fragments, not JSON!
 
-// In app.js - Update your route to match what cart.js is calling
+// <p><span>${list.weekday}</span> - <span 
+            hx-get="/edit-shop/${list.id}/${list.shop}"
+            hx-target="closest span"
+            hx-swap="outerHTML"
+            class="clickable-shop"
+        >${list.shop}</span></p>
 
-    app.get('/edit-units/:listID/:cartIndex/:currentUnits?', (req, res) => {
-    const { listID, cartIndex, currentUnits } = req.params;
-
-        console.log('listID:', listID);
-        console.log('cartIndex:', cartIndex);
-        console.log('currentUnits:', currentUnits || 'no units'); // Could be undefined
-
-        // Return a form for editing
-        res.send(/*html*/`
-            <form hx-put="/update-units/${listID}/${cartIndex}"
-                  hx-target="this"
-                  hx-swap="outerHTML">
-                <input type="number"
-                       name="newUnits"
-                       value="${currentUnits || ''}"
-                       placeholder="Enter quantity">
-                <button type="submit">Save</button>
-            </form>
-        `);
-
-    });
-
-// Handle the actual update
-app.put('/update-units/:listID/:cartIndex', (req, res) => {
-const { listID, cartIndex } = req.params;
-const { newUnits } = req.body; // This works with PUT/POST
-
-    // Find and update the data
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    list.cart[cartIndex].units = newUnits;
-
-    // Return updated cart item
-    res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
-
-});
+// views/shop.js
+const displayShop = (currentShop, listID) => /_html_/`    <form class="shop-edit">
+        <input 
+            type="text"
+            name="newShop"
+            placeholder="${currentShop}"
+        >
+        <button 
+            hx-put="/edit-shop/${listID}"
+            hx-target="closest li"
+            hx-swap="outerHTML"
+        >Edit Shop</button>
+    </form>`
