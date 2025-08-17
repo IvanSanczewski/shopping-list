@@ -7,6 +7,7 @@ import displayCart from './views/cart.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
 import displayList from './views/list.js';
 import displayQuantity from './views/quantity.js';
+import displayShop from './views/shop.js';
 
 
 // import exp from 'constants';
@@ -227,6 +228,44 @@ app.put('/edit-quantity/:id/:index', (req, res)=> {
     console.log('productWithNewQuantity: ', productWithNewQuantity);
     
     res.send(displayCart(productWithNewQuantity, id, index));
+});
+
+
+
+app.get('/edit-shop/:id/:shop', (req, res)=> {
+    console.log('EDIT SHOP');
+    const { id, shop } = req.params;
+    
+    console.log('238 - ID:', id);
+    console.log('239 - shop:', shop);
+    
+    res.send(displayShop(shop, id));  
+});
+
+
+app.put('/edit-shop/:id', (req, res)=> {
+    console.log('PUT EDIT SHOP');
+    const { id } = req.params;
+    const { newShop } = req.body;
+    
+    console.log('251 - ID:', id);
+    console.log('252 - newShop:', newShop);
+    
+    const list = SHOPPINGLISTS_DATA.find(list => list.id === id);
+    
+    list.shop = newShop;
+    console.log('257 - list:', list);
+
+    res.send(displayList(list));
+    // res.send(`
+    //         <span class="shop"
+    //             hx-get="/edit-shop/${list.id}/${list.shop}"
+    //             hx-target="this"
+    //             hx-swap="outerHTML"
+    //             style="cursor: pointer;"
+    //             title="Edit shop"
+    //         >${list.shop}</span>
+    //         `);    
 });
 
 

@@ -69,7 +69,16 @@ return /*html*/`
             </button>
             
         </form>
-        <p>${list.weekday} - ${list.shop}</p>
+        <p>
+            <span class="weekday">${list.weekday}</span>        
+            <span class="shop"
+                hx-get="/edit-shop/${list.id}/${list.shop}"
+                hx-target="this"
+                hx-swap="outerHTML"
+                style="cursor: pointer;"
+                title="Edit shop"
+            >${list.shop}</span>        
+        </p>
         <button class="delete-list"
             hx-delete="/delete-list/${list.id}"
             hx-target="closest li"

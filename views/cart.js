@@ -14,7 +14,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
                 hx-target="this"
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
-                title="Click to edit quantity"
+                title="Edit quantity"
             >${cart.units}</span>` 
         : 
             `<span class="item-units"
@@ -22,7 +22,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
                 hx-target="this"
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
-                title="Click to add quantity"
+                title="Add quantity"
             >-</span>`
         }
         
