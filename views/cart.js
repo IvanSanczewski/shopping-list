@@ -1,6 +1,6 @@
 const displayCart = (cart, listID, cartIndex) => /*html*/`
     <li class="cart-item ${cart.bought ? 'in-cart' : 'out-cart'}">
-        <span class="item-name"
+        <span id="product-${listID}-${cartIndex}" class="item-product"
             hx-post="/toggle-item-status"
             hx-vals='{"listID": "${listID}", "cartIndex": ${cartIndex}}'
             hx-target="closest li"
@@ -26,11 +26,11 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
             >-</span>`
         }
         
-        <button class="edit-name-btn"
-            hx-get="/edit-name-form/${listID}/${cartIndex}"
-            hx-target=".item-name"
+        <button class="edit-product-btn"
+            hx-get="/edit-product/${listID}/${cartIndex}"
+            hx-target="#product-${listID}-${cartIndex}"
             hx-swap="outerHTML"
-        >Edit Name</button>
+        >Edit Product</button>
 
         <button class="delete-item"
             hx-delete="/delete-product/${listID}/${cartIndex}"

@@ -8,6 +8,7 @@ import SHOPPINGLISTS_DATA from './data/data.js';
 import displayList from './views/list.js';
 import displayQuantity from './views/quantity.js';
 import displayShop from './views/shop.js';
+import displayProduct from './views/product.js';
 
 
 // import exp from 'constants';
@@ -255,18 +256,34 @@ app.put('/edit-shop/:id', (req, res)=> {
     
     list.shop = newShop;
     console.log('257 - list:', list);
-
-    res.send(displayList(list));
-    // res.send(`
-    //         <span class="shop"
-    //             hx-get="/edit-shop/${list.id}/${list.shop}"
-    //             hx-target="this"
-    //             hx-swap="outerHTML"
-    //             style="cursor: pointer;"
-    //             title="Edit shop"
-    //         >${list.shop}</span>
-    //         `);    
+    
+    res.send(displayList(list));   
 });
+
+
+app.get('/edit-product/:listID/:cartIndex', (req, res)=> {
+    console.log('EDIT PRODUCT GET');
+    const { listID, cartIndex } = req.params;
+    
+    console.log('268 - listID:', listID);
+    console.log('269 - cartIndex:', cartIndex);
+    
+    res.send(displayProduct(listID, cartIndex))
+});
+
+
+app.put('/edit-product/:listID/:cartIndex', (req, res)=> {
+    console.log('EDIT PRODUCT PUT');
+    const { listID, cartIndex } = req.params;
+    const { newProduct } = req.body;
+    
+    console.log('280 - listID:', listID);
+    console.log('281 - cartIndex:', cartIndex);
+    console.log('282 - newProduct:', newProduct);
+
+    //TODO: implement logic to add the newProduct to the proper list and send the response with it
+});
+
 
 
 app.listen(PORT, () => {

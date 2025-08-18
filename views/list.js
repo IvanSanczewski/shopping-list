@@ -21,7 +21,7 @@ return /*html*/`
                     placeholder="${list.total}"
                 >
                 <p>EUR</p>
-                <button>Edit</button>
+                <button>Edit Price</button>
             </form>`
         :
             /*html*/`
