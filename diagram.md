@@ -102,23 +102,4 @@
 6.  hx-swap="outerHTML" - How to replace content
     Key Concept: Server returns HTML fragments, not JSON!
 
-// <p><span>${list.weekday}</span> - <span 
-            hx-get="/edit-shop/${list.id}/${list.shop}"
-            hx-target="closest span"
-            hx-swap="outerHTML"
-            class="clickable-shop"
-        >${list.shop}</span></p>
-
-// views/shop.js
-const displayShop = (currentShop, listID) => /_html_/`    <form class="shop-edit">
-        <input 
-            type="text"
-            name="newShop"
-            placeholder="${currentShop}"
-        >
-        <button 
-            hx-put="/edit-shop/${listID}"
-            hx-target="closest li"
-            hx-swap="outerHTML"
-        >Edit Shop</button>
-    </form>`
+<!-- hx-target="#product-${listID}-${cartIndex}" -->

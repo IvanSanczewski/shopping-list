@@ -6,7 +6,7 @@ const displayProduct = (listID, cartIndex) => /*html*/ `
         >
         <button class="edit-product-btn"
             hx-put="/edit-product/${listID}/${cartIndex}"
-            hx-target="#product-${listID}-${cartIndex}"
+            hx-target="closest .cart-item"
             hx-swap="outerHTML"
         >Confirm New Product
         </button>

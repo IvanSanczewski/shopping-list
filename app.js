@@ -2,9 +2,9 @@ import express from 'express';
 import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
+import SHOPPINGLISTS_DATA from './data/data.js';
 import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
-import SHOPPINGLISTS_DATA from './data/data.js';
 import displayList from './views/list.js';
 import displayQuantity from './views/quantity.js';
 import displayShop from './views/shop.js';
@@ -280,8 +280,16 @@ app.put('/edit-product/:listID/:cartIndex', (req, res)=> {
     console.log('280 - listID:', listID);
     console.log('281 - cartIndex:', cartIndex);
     console.log('282 - newProduct:', newProduct);
+    
+    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
+    
+    list.cart[cartIndex].item = newProduct;
+    console.log(list);
+    console.log('288 - list.cart[cartIndex]:', list.cart[cartIndex]);
+    console.log('289 - list.cart[cartIndex].item:', list.cart[cartIndex].item);
+    console.log('290 - newProduct:', newProduct);
 
-    //TODO: implement logic to add the newProduct to the proper list and send the response with it
+    res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
 });
 
 
