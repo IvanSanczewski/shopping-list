@@ -34,7 +34,7 @@ return /*html*/`
         <ul>
             ${list.cart.map((cart, index) => displayCart(cart, list.id, index)).join('')}
         </ul>
-        <form class="new-product">
+        <form class="new-product" id="form-${list.id}">
             <input 
                 type="text"
                 name="product"
@@ -47,13 +47,12 @@ return /*html*/`
                 placeholder="x"
                 size="1"
             />
-            FIXME: Delete product & quantity after add button
             <button class="add-product"
                 hx-post="/cart"
                 hx-vals='{"listID": "${list.id}"}'
                 hx-target="[data-id='${list.id}'] ul"
                 hx-swap="beforeend"
-            >Add Product
+                >Add Product
             </button>
             
         </form>

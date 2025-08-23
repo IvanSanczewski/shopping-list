@@ -47,9 +47,12 @@ app.post('/cart', (req, res) => {
             units: quantity
         };
         list.cart.push(newProduct);
-        // SHOPPINGLISTS_DATA.cart.push(newProduct);
+        res.set('HX-Trigger-After-Swap', JSON.stringify({
+            "resetForm": { "formId": `form-${listID}` }
+        }));
+        console.log('50 - newProduct:', newProduct);
 
-        // Params listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
+        // Arguments listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
         res.send(displayCart(newProduct, listID, list.cart.length -1));
 
     } else {
