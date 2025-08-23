@@ -9,6 +9,7 @@ import displayList from './views/list.js';
 import displayQuantity from './views/quantity.js';
 import displayShop from './views/shop.js';
 import displayProduct from './views/product.js';
+import displayPrice from './views/price.js';
 
 
 // import exp from 'constants';
@@ -183,19 +184,23 @@ app.delete('/delete-list/:id', (req, res) => {
 // ***** U P D A T E  *****
 
 // Update price
-app.put('/price/edit/:id', (req, res) => {
-    const { price } = req.body;
-    const { id } = req.params;
+app.put('/price/edit/:id/:total', (req, res) => {
+    // const { price } = req.body;
+    const { id, total } = req.params;
     
-    console.log('187', price, id);
+    console.log('190', id);
+    console.log('191', total, typeof total);
+
+    const newTotal = Number(total);
+    console.log(newTotal);
     
     const list = SHOPPINGLISTS_DATA;
     const index = SHOPPINGLISTS_DATA.findIndex(list => list.id === id);
     
-    list[index].total = price;
+    list[index].total = newTotal;
 
-    console.log('194 OBJECT - ', list[index]);
-    console.log('195 ARRAY - ', list);
+    console.log('201 OBJECT - ', list[index]);
+    console.log('202 ARRAY - ', list);
 
     res.send(displayList(list[index]))
 });
@@ -268,7 +273,7 @@ app.get('/edit-product/:listID/:cartIndex', (req, res)=> {
     console.log('268 - listID:', listID);
     console.log('269 - cartIndex:', cartIndex);
     
-    res.send(displayProduct(listID, cartIndex))
+    res.send(displayProduct(listID, cartIndex));
 });
 
 
@@ -288,10 +293,38 @@ app.put('/edit-product/:listID/:cartIndex', (req, res)=> {
     console.log('288 - list.cart[cartIndex]:', list.cart[cartIndex]);
     console.log('289 - list.cart[cartIndex].item:', list.cart[cartIndex].item);
     console.log('290 - newProduct:', newProduct);
-
+    
     res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
 });
 
+
+app.get('/edit-price/:listID/:listTotal', (req, res) => {
+    console.log('EDIT PRICE GET');
+    const { listID, listTotal } = req.params;
+    
+    console.log('305 - listID:', listID);
+    console.log('306 - listTotal:', listTotal, typeof listTotal);
+    
+    res.send(displayPrice(listID, listTotal));
+});
+
+app.put('/edit-price/:listID', (req, res) => {
+    console.log('EDIT PRICE PUT');
+    const { listID } = req.params;
+    const { newPrice } = req.body;
+    
+    console.log('316 - listID:', listID);
+    console.log('317 - newPrice:', newPrice, typeof newPrice);
+    
+    const newTotal = Number(newPrice);
+    console.log('320 - newTotal:', newTotal, typeof newTotal);
+
+    const list = SHOPPINGLISTS_DATA.find(e =>e.id === listID);
+
+    list.total = newTotal;
+
+    res.send(displayList(list));
+});
 
 
 app.listen(PORT, () => {

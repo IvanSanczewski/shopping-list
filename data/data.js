@@ -10,11 +10,11 @@ const SHOPPINGLISTS_DATA = [
             {item: 'avocados', bought: true, units: 2},
             {item: 'carrots', bought: false, units: 3},
         ],
-        total: null,
+        total: 15.69,
         weekday: 'Monday',     
     },
     {
-        id: '46_24',
+        id: '26_24',
         title: 'Week 26',
         shop: 'Hales Turgus',
         cart: [

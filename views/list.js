@@ -3,42 +3,30 @@ import displayCart from "./cart.js"
 const displayList = (list) => {
 
     console.log('5 - list.id: ', list.id, typeof list.id);
+    console.log('6 - ', list.total);
 return /*html*/`
 <li class="card" data-id="${list.id}">
     <div class="card-title">
         <h3>${list.title}</h3>
         ${list.total ? 
             /*html*/`
-            <form class="price-edit"
-                hx-put="price/edit/${list.id}"
-                hx-target="closest li"
+            <span class="list-price"
+                hx-get="/edit-price/${list.id}/${list.total}"
+                hx-target="this"
                 hx-swap="outerHTML"
-            >
-                <input 
-                    type="number"
-                    name="price"
-                    step="0.25"
-                    placeholder="${list.total}"
-                >
-                <p>EUR</p>
-                <button>Edit Price</button>
-            </form>`
+                style="cursor: pointer"
+                title="Edit price"
+            >${list.total} EUR
+            </span>`
         :
             /*html*/`
-            <form class="price">
-                <input 
-                    type="number"
-                    name="price"
-                    step="0.25"
-                    placeholder="0.00"
-                >
-                <button class="add-price"
-                    hx-post="/list"
-                    hx-target="[data-id='${list.id}']"
-                    hx-vals='{"listID": "${list.id}"}'>
-                    Add Price
-                </button>
-            </form>`
+            <span class="list-price"
+                hx-get="/edit-price/${list.id}/${list.total}"   
+                hx-target="this"
+                hx-swap="outerHTML"
+                style="cursor: pointer"
+                title="Add price"
+            >- EUR</span>`
         }
     </div>
     
