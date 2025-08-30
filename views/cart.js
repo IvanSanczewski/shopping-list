@@ -23,7 +23,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
                 title="Add quantity"
-            >-</span>`
+            >Add</span>`
         }
         
         <button class="edit-product-btn"

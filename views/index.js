@@ -11,7 +11,16 @@ const createHomepageTemplate = () => /*html*/`
         
         <body>
             <header>
-                <h1>SHOPPING LISTS</h1>
+                <!-- <div class="logo">logo</div> -->
+                <h1>SHOPPING LIST</h1>
+                <div class="theme-switch-wrapper">
+                    <span class="theme-icon sun" title="Light mode">&#9728;</span>
+                    <label class="theme-switch">
+                        <input type="checkbox" id="theme-toggle-slider">
+                        <span class="slider"></span>
+                    </label>
+                    <span class="theme-icon moon" title="Dark mode">&#9790;</span>
+                </div>
             </header>
             
             <main>
@@ -29,6 +38,24 @@ const createHomepageTemplate = () => /*html*/`
         </footer>
 
         <script>
+            // Theme switch logic
+            const themeToggle = document.getElementById('theme-toggle-slider');
+            // On load, set theme from localStorage
+            if (localStorage.getItem('theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                if (themeToggle) themeToggle.checked = true;
+            }
+            if (themeToggle) {
+                themeToggle.addEventListener('change', function() {
+                    if (this.checked) {
+                        document.body.classList.add('dark-mode');
+                        localStorage.setItem('theme', 'dark');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                        localStorage.setItem('theme', 'light');
+                    }
+                });
+            }
             document.addEventListener('resetForm', function(event) {
                 console.log('Reset event fired:', event.detail);
                 const formId = event.detail.formId;
