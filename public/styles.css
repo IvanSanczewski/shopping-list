@@ -209,7 +209,7 @@ input:focus {
 .edit-quantity input,
 .new-product input:nth-child(2),
 .edit-price input {
-    width: 85px;
+    width: 105px;
 }
 
 
