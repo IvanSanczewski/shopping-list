@@ -14,7 +14,7 @@ const displayCards = () => /*html*/`
         <input 
         type="text"
         name="shop"
-        placeholder="shop"
+        placeholder="add shop"
         size="25"
         />
         <input 

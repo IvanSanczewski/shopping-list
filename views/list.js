@@ -38,20 +38,20 @@ return /*html*/`
             <input 
                 type="text"
                 name="product"
-                placeholder="product"
-                size="25"
+                placeholder="add product"
+                size="15"
             />
             <input 
                 type="number"
                 name="quantity"
                 placeholder="x"
-                size="1"
             />
             <button class="add-product"
                 hx-post="/cart"
                 hx-vals='{"listID": "${list.id}"}'
                 hx-target="[data-id='${list.id}'] ul"
                 hx-swap="beforeend"
+                hx-on::after-request="this.closest('form').reset()"
                 >Add Product
             </button>
             

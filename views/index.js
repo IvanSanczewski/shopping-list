@@ -56,17 +56,9 @@ const createHomepageTemplate = () => /*html*/`
                     }
                 });
             }
-            document.addEventListener('resetForm', function(event) {
-                console.log('Reset event fired:', event.detail);
-                const formId = event.detail.formId;
-                const form = document.getElementById(formId);
-                if (form) {
-                    form.reset();
-                    console.log('Form reset:', formId);
-                } else {
-                    console.log('Form not found:', formId);
-                }
-            });
+          
+            
+            
         </script>
         </body>
     </html>

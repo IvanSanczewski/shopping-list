@@ -102,17 +102,32 @@
 6.  hx-swap="outerHTML" - How to replace content
     Key Concept: Server returns HTML fragments, not JSON!
 
-<!-- h<form class="price-edit"
-                hx-put="price/edit/${list.id}"
-                hx-target="closest li"
-                hx-swap="outerHTML"
-            >
-                <input
-                    type="number"
-                    name="price"
-                    step="0.25"
-                    placeholder="${list.total}"
-                >
-                <p>EUR</p>
-                <button>Edit Price</button>
-            </form>-->
+<!-- ***********  W O R K I N G  *********** -->
+
+/_ Base autofill override styles _/
+input:-webkit-autofill,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:active {
+-webkit-box-shadow: 0 0 0 1000px var(--color-dark-bg-dark) inset !important;
+box-shadow: 0 0 0 1000px var(--color-dark-bg-dark) inset !important;
+-webkit-text-fill-color: var(--color-dark-edit-primary) !important;
+color: var(--color-dark-edit-primary) !important;
+caret-color: var(--color-dark-edit-primary) !important;
+transition: background-color 5000s ease-in-out 0s;
+}
+
+/_ Specific background matching for odd and even list items _/
+.card-list > ul > li:nth-child(odd) input,
+.card-list > ul > li:nth-child(odd) input:-webkit-autofill {
+background-color: var(--color-dark-bg-primary) !important;
+-webkit-box-shadow: 0 0 0 30px var(--color-dark-bg-primary) inset !important;
+}
+
+.card-list > ul > li:nth-child(even) input,
+.card-list > ul > li:nth-child(even) input:-webkit-autofill {
+background-color: var(--color-dark-bg-secondary) !important;
+-webkit-box-shadow: 0 0 0 30px var(--color-dark-bg-secondary) inset !important;
+}
+
+<!-- ***********  W O R K I N G  *********** -->
