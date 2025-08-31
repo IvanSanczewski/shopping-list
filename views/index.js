@@ -57,8 +57,6 @@ const createHomepageTemplate = () => /*html*/`
                 });
             }
           
-            
-            
         </script>
         </body>
     </html>
