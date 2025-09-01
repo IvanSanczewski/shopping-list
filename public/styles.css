@@ -154,6 +154,11 @@ h3 {
     display: inline-block;
 }
 
+.item-product {
+    display: inline-block;
+    padding: .35em 0;
+}
+
 .item-buttons {
     display: flex;
     gap: 1em;

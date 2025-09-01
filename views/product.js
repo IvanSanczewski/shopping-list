@@ -6,11 +6,11 @@ const displayProduct = (listID, cartIndex) => /*html*/ `
         >
         <svg
             class="edit-product-btn icon-action"
-            hx-post="/edit-product/${listID}/${cartIndex}"
+            hx-put="/edit-product/${listID}/${cartIndex}"
             hx-target="closest .cart-item"
             hx-swap="outerHTML"
             tabindex="0"
-            width="20" height="20" viewBox="0 0 24 24"
+            width="26" height="26" viewBox="0 0 24 24"
             fill="none"
             stroke="var(--color-dark-edit-primary)"
             stroke-width="2"
