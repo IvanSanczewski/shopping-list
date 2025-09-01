@@ -154,6 +154,11 @@ h3 {
     display: inline-block;
 }
 
+.item-buttons {
+    display: flex;
+    gap: 1em;
+}
+
 .cart-item:hover {
     opacity: 0.88;
 }
@@ -323,6 +328,10 @@ footer {
     color: var(--color-dark-text-alt);
 }
 
+svg {
+    outline: none;
+}
+
 button {
     background-color: var(--color-dark-accent-primary);
     color: var(--color-dark-text-main);
@@ -337,6 +346,10 @@ button {
 button:hover,
 button:focus {
     background-color: var(--color-dark-accent-primary-hover);
+}
+
+.icon-action {
+    cursor: pointer;
 }
 
 .cart-item button, 
@@ -466,3 +479,4 @@ input::-webkit-calendar-picker-indicator {
     background-color: var(--color-dark-bg-secondary) !important;
     -webkit-box-shadow: 0 0 0 30px var(--color-dark-bg-secondary) inset !important;
 }
+

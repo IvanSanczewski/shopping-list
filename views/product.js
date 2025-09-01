@@ -4,12 +4,24 @@ const displayProduct = (listID, cartIndex) => /*html*/ `
             type="text"
             name="newProduct"
         >
-        <button class="edit-product-btn"
-            hx-put="/edit-product/${listID}/${cartIndex}"
+        <svg
+            class="edit-product-btn icon-action"
+            hx-post="/edit-product/${listID}/${cartIndex}"
             hx-target="closest .cart-item"
             hx-swap="outerHTML"
-        >Confirm New Product
-        </button>
+            tabindex="0"
+            width="20" height="20" viewBox="0 0 24 24"
+            fill="none"
+            stroke="var(--color-dark-edit-primary)"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            title="Confirm"
+            style="vertical-align: middle;"
+        >
+            <polyline points="20 6 9 17 4 12" />
+        </svg>
+        
     </form>
 
 `
