@@ -59,4 +59,3 @@ run().catch((e) => {
   console.error('Unexpected error in seed script:', e);
   process.exit(1);
 });
-
