@@ -116,7 +116,6 @@ export async function updateList(listId, updates) {
     }
 }
 
-
 // Delete a shopping list
 
 export async function deleteList(listId) {
@@ -141,4 +140,68 @@ export async function deleteList(listId) {
     }
 }
 
+//******* S H O P P I N G   I T E M S   O P E R A T I O N S *******//
 
+// Add items to a shopping list
+
+export async function addItem(listId, item) {
+    try {
+        const { data, error} = await supabase
+            .from('shipping_items')
+            .insert([{
+                list_id: listId,
+                item: item.item,
+                bought: item.bought || false,
+                units: item.inits,
+            }])
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        return data;
+
+    } catch (error) {
+        console.error(`Error adding ${item} to ${listId} list:`, error.message);
+        throw error;        
+    }
+}
+
+// Update item
+
+export async function updateItem(itemId, updates){
+    try {
+        const { data, error } = await supabase
+            .from('shopping_items')
+            .update(updates)
+            .eq('id', itemId)
+            .select()
+            .single();
+
+        if (error) throw error;
+
+        return data;
+
+    } catch (error) {
+        console.error('Error updating ${itemId}:', error.message);
+        throw error;
+    }
+}
+
+
+// Delete item 
+export async function deleteItem(itemId) {
+    try {
+        //TODO: collect data to be able to collect item name
+        const { error } = await supabase
+            .from('shopping_items')
+            .delete()
+            .eq('id', itemId)
+
+        if (error) throw error;
+
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting ${itemId}:', error.message); 
+    }
+}
