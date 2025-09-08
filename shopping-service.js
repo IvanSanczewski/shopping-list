@@ -205,3 +205,55 @@ export async function deleteItem(itemId) {
         console.error('Error deleting ${itemId}:', error.message); 
     }
 }
+
+
+// Toggle item bought status
+export async function toggleBoughtStatus(itemId) {
+    try {
+        const { data: item, error:fetchError } = await supabase
+            .from('shopping_items')
+            .select('bought')
+            .eq('id', itemId)
+            .single();
+
+        if (fetchError) throw fetchError;
+        
+        // Toggue status
+        const toggledStatus = !item.bought;
+
+        const { data, error } = await supabase
+            .from('shopping_items')
+            .update({bought: newStatus})
+            .eq('id', itemId)
+            .select()
+            .single();
+
+        if (error) throw error;
+
+    } catch (error) {
+        console.error('Error toggling ${item} bought status:', error.message);
+        throw error;
+    }
+}
+
+
+// Check if list exists
+ 
+export async function listExists(listId) {
+  try {
+    const { data, error } = await supabase
+      .from('shopping_lists')
+      .select('id')
+      .eq('id', listId)
+      .single();
+
+    if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
+      throw error;
+    }
+
+    return !!data;
+  } catch (error) {
+    console.error(`Error checking if list exists ${listId}:`, error.message);
+    throw error;
+  }
+}
