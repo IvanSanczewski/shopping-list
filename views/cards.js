@@ -1,10 +1,9 @@
-import SHOPPINGLISTS_DATA from "../data/data.js";
 import displayList from "./list.js";
 
-const displayCards = () => /*html*/`
+const displayCards = (lists = []) => /*html*/`
                    
     <ul class="cards-container">
-        ${SHOPPINGLISTS_DATA
+        ${lists
             .sort((a,z) => z.title.localeCompare(a.title))
             .map(list => displayList(list)).join('')
         }

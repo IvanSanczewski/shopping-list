@@ -4,6 +4,7 @@ import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
+import { getAllLists } from './shopping-service.js';
 import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import displayList from './views/list.js';
@@ -30,8 +31,14 @@ app.get('/', (req, res) => {
 });
 
 // Loads all the shopping lists from cards.js
-app.get('/cards', (req, res) => {
-    res.send(displayCards());
+app.get('/cards', async (req, res) => {
+    try {
+        const lists = await getAllLists();
+        res.send(displayCards(lists));
+    } catch (error) {
+        console.error('Error loading cards:', error.message);
+        res.status(500).send('Error loading shopping lists');
+    }
 });
 
 // Adds shopping items its cart
