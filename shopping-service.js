@@ -1,5 +1,4 @@
-import e from "express";
-import { createSupabaseClient } from "./db/supabase";
+import { createSupabaseClient } from "./db/supabase.js";
 
 const supabase = createSupabaseClient();
 
@@ -71,7 +70,7 @@ export async function getList(listId) {
 export async function createList(listData) {
     try {
         const { data, error } = await supabase
-            .from('shopping_list')
+            .from('shopping_lists')
             .insert([{
                 id: listData.id,
                 title:listData.title,
@@ -147,12 +146,12 @@ export async function deleteList(listId) {
 export async function addItem(listId, item) {
     try {
         const { data, error} = await supabase
-            .from('shipping_items')
+            .from('shopping_items')
             .insert([{
                 list_id: listId,
                 item: item.item,
                 bought: item.bought || false,
-                units: item.inits,
+                units: item.units,
             }])
             .select()
             .single();
