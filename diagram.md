@@ -131,3 +131,29 @@ background-color: var(--color-dark-bg-secondary) !important;
 }
 
 <!-- ***********  W O R K I N G  *********** -->
+
+<!--
+
+┌─────────────────┐    HTTP POST     ┌─────────────────┐    addItem()    ┌─────────────────┐    INSERT     ┌─────────────────┐
+│                 │   /cart request  │                 │     function    │                 │   SQL query   │                 │
+│   Frontend      │ ───────────────> │   app.js        │ ──────────────> │  Service Layer  │ ────────────> │   Supabase DB   │
+│   (Browser)     │                  │   Route Handler │                 │ shopping-service│               │                 │
+└─────────────────┘                  └─────────────────┘                 └─────────────────┘               └─────────────────┘
+         ^                                     │                                   │                                 │
+         │                                     │ await                             │ await                           │
+         │                                     ▼                                   ▼                                 ▼
+┌─────────────────┐     HTML response  ┌─────────────────┐    Promise with   ┌─────────────────┐    Promise with   ┌─────────────────┐
+│                 │ <───────────────── │                 │ <──── new item ── │                 │ <──── new item ── │                 │
+│   Updated UI    │                    │   displayCart() │       data        │   return data   │       data        │  Database Row   │
+│                 │                    │                 │                   │                 │                   │   Created       │
+└─────────────────┘                    └─────────────────┘                   └─────────────────┘                   └─────────────────┘
+
+Flow Steps:
+1. Browser sends POST /cart with product data
+2. app.js receives request, calls await addItem()
+3. Service layer receives call, makes INSERT to Supabase
+4. Supabase creates database row, returns new record
+5. Service layer returns the new item data
+6. app.js receives the data, generates HTML with displayCart()
+7. Browser receives updated HTML and displays it
+-->

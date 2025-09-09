@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
-import { getAllLists } from './shopping-service.js';
+import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList } from './shopping-service.js';
 import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import displayList from './views/list.js';
@@ -42,117 +42,136 @@ app.get('/cards', async (req, res) => {
 });
 
 // Adds shopping items its cart
-app.post('/cart', (req, res) => {
-    const {listID, product, quantity} = req.body;
+app.post('/cart', async (req, res) => {
+    try {
+        const { listID, product, quantity} = req.body;
 
-    // References the obbject in the DATA array according to list.id
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
+        // References the obbject in the DATA array according to list.id
+        if (product && quantity) {
+            const newProduct = {
+                item: product,
+                bought: false,
+                units: quantity
+            };
 
-    if (product && quantity) {
-        const newProduct = {
-            item: product,
-            bought: false,
-            units: quantity
-        };
-        list.cart.push(newProduct);
-        res.set('HX-Trigger-After-Swap', JSON.stringify({
+            // Adds item to db
+            const addedItem = await addItem(listID, newProduct);
+
+            // list.cart.push(newProduct);
+            res.set('HX-Trigger-After-Swap', JSON.stringify({
             "resetForm": { "formId": `form-${listID}` }
         }));
-        console.log('50 - newProduct:', newProduct);
-
+        console.log('64 - New product is :', addedItem);
+        
         // Arguments listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
-        res.send(displayCart(newProduct, listID, list.cart.length -1));
+        res.send(displayCart(addedItem, listID, addedItem.id));
+        
+        } else {
+            res.status(400).send('Add product & quantity');
+        }
+    } catch (error) {
+        console.error('Error adding item to cart:', error.message);
+        res.status(500).send('Error adding item to cart');
 
-    } else {
-        res.status(404).send('Add product & quantity');
-    }
-    
+    } 
 });
 
-app.post('/cards', (req, res) => {
-    const {shop, nextWeekList} = req.body;
-    const lists = SHOPPINGLISTS_DATA
-    
-    const now = new Date();
-    const actualWeek = format(now, 'ww');
-    const actualYear = format(now, 'yy');
-    const actualWeekDay = format(now, 'i');
-    
-    console.log('65 actualWeekDay:', actualWeekDay);
+app.post('/cards', async (req, res) => {
+    try {
+        const { shop, nextWeekList } = req.body;
+        
+        const now = new Date();
+        const actualWeek = format(now, 'ww');
+        const actualYear = format(now, 'yy');
+        const actualWeekDay = format(now, 'i');
+        
+        console.log('actualWeekDay:', actualWeekDay);
 
-    let isNextWeek;
-    (nextWeekList)? isNextWeek = true : isNextWeek = false ;
-    
-    let weekId = (actualWeekDay === '7') ? Number(actualWeek -1) : Number(actualWeek);
-    console.log('71 weekId:', weekId, typeof weekId);    
-    
-    if (isNextWeek) { 
-        weekId+= 1
-        console.log('IF HAPPENS');
-    }
-    
-    console.log('75 nextWeekList:', nextWeekList, typeof nextWeekList);    
-    console.log('76 isNextWeek:', isNextWeek, typeof isNextWeek);    
-    console.log('77 weekId:', weekId, typeof weekId);    
+        // let isNextWeek;
+        // (nextWeekList)? isNextWeek = true : isNextWeek = false ;
+        
+        let isNextWeek = !!nextWeekList; // Double bang coreces a boolean from truthy/falsy values
+        let weekId = (actualWeekDay === '7') ? Number(actualWeek -1) : Number(actualWeek);
+        
+        if (isNextWeek) { 
+            weekId+= 1
+            console.log('Creating next week list');
+        }
 
-    if (!lists.find(list => list.id === `${weekId}_${actualYear}`)) {
-        const newList = {
-            id: `${weekId}_${actualYear}`,
-            title: `Week ${weekId}`,
-            shop: shop,
-            cart: [],
-            total: 20.69,
-            weekday: 'Wednesday'
-        };
-        
-        lists.push(newList);
-        
-        res.send(displayCards());
-        
-    } else {
-        console.log('list exists');
-        res.status(404).send('There is already a shopping list for this week. You can edit it or delete it and then create a new one.');
+        const listId = `${weekId}_${actualYear}`;
+
+        // Check if the list exists in the db
+        const exists = await listExists(listId);
+
+        if (!exists) {
+            const newList = {
+                id: listId,
+                title: `Week ${weekId}`,
+                shop: shop,
+                cart: [],
+                total: 10,
+                weekday: 'Wednesday'
+            };
+
+            // Create new list in db
+            await createList(newListData);
+
+            // Fetch all lists from db
+            const allLists = await getAllLists();
+            res.send(displayCards(allLists));
+            
+        } else {
+            console.log('list exists');
+            res.status(409).send('There is already a shopping list for this week. You can edit it or delete it and then create a new one.');
+        }
+
+    } catch (error) {
+        console.error('Error creating shopping list:', error.message);
+        res.status(500).send('Error creating shopping list');
     }
 });
 
 
 // Adds price to the cart
-app.post('/list', (req, res) => {
-    const {listID, price} = req.body;
-    console.log('104 - listID:', listID, typeof listID );
-    console.log('106 - price:', price, typeof price );
-
-    const newPrice = Number(price)
-    
-    // References the obbject in the DATA array according to list.id
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    
-    if (price) {
-        list.total = newPrice
+app.post('/list', async (req, res) => {
+    try {
+        const { listID, price } = req.body;
+        
+        const newPrice = Number(price)
+        
+        if (price) {
+            // Update db with the new price
+            await updateList(listID, {total: newPrice});
+            
+            // Fetch updated list from db
+            const updatedList = await getList(listID);
+            res.send(displayList(updatedList));
+        } else {
+            res.status(400).send('New price required');
+        }
+        
+    } catch (error) {
+        console.error('Error updating list price', error.message);
+        res.status(500).send('Error updating list price');
     }
-    console.log('118 - ', list);
-
-    res.send(displayList(list));
 });
 
 
 // Toggle item bought status - HTMX endpoint
-app.post('/toggle-item-status', (req, res) => {
-    // Extract the listID and cartIndex from the request body
-    const { listID, cartIndex } = req.body;
+app.post('/toggle-item-status', async (req, res) => {
+    try {
+        // Extract the listID and item ID from db
+        const { listID, itemId } = req.body;
 
-    // Find the specific shopping list by ID
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    
-    if (list && list.cart[cartIndex]) {
-        // Toggle the bought status of the specific item
-        list.cart[cartIndex].bought = !list.cart[cartIndex].bought;
-        
-        // Send back the updated cart item HTML
-        res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
-    } else {
-        // Send error response if item not found
-        res.status(404).send('Item not found');
+        // Toggle product status in db
+        const updatedItem = await toggleBoughtStatus(itemId);
+
+        // Send the updated cart item to generate the HTML
+        res.send(displayCart(updatedItem, listID, itemId));
+
+    } catch (error) {
+        console.error('Error toggling product status:', error.message);
+        res.status(500).send('Error toggling product status');
     }
 });
 
@@ -195,56 +214,58 @@ app.delete('/delete-list/:id', (req, res) => {
 // ***** U P D A T E  *****
 
 // Update price
-app.put('/price/edit/:id/:total', (req, res) => {
-    // const { price } = req.body;
-    const { id, total } = req.params;
-    
-    console.log('190', id);
-    console.log('191', total, typeof total);
+app.put('/price/edit/:id/:total', async (req, res) => {
+    try {
+        
+        // const { price } = req.body;
+        const { id, total } = req.params;
+        
+        const newTotal = Number(total);
 
-    const newTotal = Number(total);
-    console.log(newTotal);
-    
-    const list = SHOPPINGLISTS_DATA;
-    const index = SHOPPINGLISTS_DATA.findIndex(list => list.id === id);
-    
-    list[index].total = newTotal;
+        // Update in shopping_lists db
+        await updateList(id, { total: newTotal});
 
-    console.log('201 OBJECT - ', list[index]);
-    console.log('202 ARRAY - ', list);
+        // Fetch updated list from db
+        const updatedList = await getList(id);
+        console.log('Updated list:', updatedList);
 
-    res.send(displayList(list[index]))
+
+        res.send(displayList(updatedList));
+    } catch (error) {
+        console.error('Error updating price:', error.messaga);
+        res.status(500).send('Error updating price');
+    }
 });
 
 
-app.get('/edit-quantity/:listID/:cartIndex/:quantity', (req, res)=> {
+app.get('/edit-quantity/:listID/:itemId/:quantity', (req, res)=> {
     console.log('EDIT UNITS');
-    const { listID, cartIndex, quantity } = req.params;
+    const { listID, itemId, quantity } = req.params;
     
-    console.log('207 - index: ', cartIndex);
-    console.log('208 - ID: ', listID);
-    console.log('209 - quantity: ', quantity);
-    
-    res.send(displayQuantity(quantity, listID, cartIndex));
+    res.send(displayQuantity(quantity, listID, itemId));
 });
 
 
-app.put('/edit-quantity/:id/:index', (req, res)=> {
-    const { newQuantity } = req.body;
-    const { id, index } = req.params;
+app.put('/edit-quantity/:listID/:itemId', async (req, res)=> {
+    try {
+        const { listID, itemId } = req.params;
+        const { newQuantity } = req.body;
 
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === id);
+        const updatedQuantity = Number(newQuantity); 
+
+        // Ensure number is a positive-non-0
+        if (isNaN(updatedQuantity) || updatedQuantity <= 0) {
+            return res.status(400).send('Quantity must be 1 or more')
+        }
+        
+        // Update units in shopping_items db
+        const updatedItemQuantity = await updateItem(itemId, { units: updatedQuantity});
     
-    console.log('list: ', list);
-    console.log('newQuantity: ', newQuantity);
-    console.log('id: ', id);
-    console.log('index: ', index);
-    
-    const productWithNewQuantity = list.cart[index];
-    list.cart[index].units = newQuantity;
-    console.log('productWithNewQuantity: ', productWithNewQuantity);
-    
-    res.send(displayCart(productWithNewQuantity, id, index));
+        res.send(displayCart(updatedItemQuantity, listID, itemId));
+    } catch (error) {
+        console.error('Error updating item quantity:', error.message);
+        res.status(500).send('Error updating item quantity');        
+    }
 });
 
 
@@ -253,27 +274,31 @@ app.get('/edit-shop/:id/:shop', (req, res)=> {
     console.log('EDIT SHOP');
     const { id, shop } = req.params;
     
-    console.log('238 - ID:', id);
-    console.log('239 - shop:', shop);
-    
     res.send(displayShop(shop, id));  
 });
 
 
-app.put('/edit-shop/:id', (req, res)=> {
-    console.log('PUT EDIT SHOP');
-    const { id } = req.params;
-    const { newShop } = req.body;
-    
-    console.log('251 - ID:', id);
-    console.log('252 - newShop:', newShop);
-    
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === id);
-    
-    list.shop = newShop;
-    console.log('257 - list:', list);
-    
-    res.send(displayList(list));   
+app.put('/edit-shop/:id', async (req, res)=> {
+    try {
+        const { id } = req.params;
+        const { newShop } = req.body;
+        
+        // Validate newShop is a valid string
+        if(!newShop || typeof newShop !== 'string'){
+            return res.status(400).send('Enter a valid shop')
+        }
+
+        // Update shop in shopping_list db
+        const updatedShop = await updateList(id, { shop: newShop});
+
+        // Fetch updated list from shopping_list db
+        const updatedList = await getList(id);
+
+        res.send(displayList(updatedList));   
+    } catch (error) {
+        console.error('Error updating the shop:', error.message);        
+        res.status(500).send('Error updating the shop');
+    }
 });
 
 

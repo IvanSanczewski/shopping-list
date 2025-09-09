@@ -1,4 +1,4 @@
-const displayQuantity = (quantity, listID, cartIndex) => /*html*/`
+const displayQuantity = (quantity, listID, itemId) => /*html*/`
     <form class="edit-quantity">
         <input 
             type="number"
@@ -7,7 +7,7 @@ const displayQuantity = (quantity, listID, cartIndex) => /*html*/`
             placeholder="${quantity}"// FIXME: change colour to a lightgray - CSS cannot change it
         >
         <button class="edit-quantity-btn"
-            hx-put="/edit-quantity/${listID}/${cartIndex}"
+            hx-put="/edit-quantity/${listID}/${itemId}"
             hx-target="closest li"
             hx-swap="outerHTML"
         >Edit quantity

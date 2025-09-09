@@ -222,10 +222,14 @@ export async function toggleBoughtStatus(itemId) {
 
         const { data, error } = await supabase
             .from('shopping_items')
-            .update({bought: newStatus})
+            .update({bought: toggledStatus})
             .eq('id', itemId)
             .select()
             .single();
+
+        if (error) throw error;
+
+        return data;
 
         if (error) throw error;
 

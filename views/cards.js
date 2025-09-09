@@ -1,7 +1,6 @@
 import displayList from "./list.js";
 
 const displayCards = (lists = []) => /*html*/`
-                   
     <ul class="cards-container">
         ${lists
             .sort((a,z) => z.title.localeCompare(a.title))
@@ -24,10 +23,12 @@ const displayCards = (lists = []) => /*html*/`
         <label for="nextWeekList">Shopping list for next week</label>
         <button class="add-list"
             hx-post="/cards"
-            hx-target="#shopping-lists-container"
+            hx-target=".cards-container"
+            hx-swap="afterbegin"
         >Add List
         </button>
     </form>
 
 ` 
+export const displayNewCard = (list) => displayList(list);
 export default displayCards;

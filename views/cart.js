@@ -11,7 +11,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
             
             ${cart.units ?
                 `<span class="item-units"   
-                hx-get="/edit-quantity/${listID}/${cartIndex}/${cart.units}"
+                hx-get="/edit-quantity/${listID}/${cart.id}/${cart.units}"
                 hx-target="this"
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
