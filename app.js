@@ -12,6 +12,7 @@ import displayQuantity from './views/quantity.js';
 import displayShop from './views/shop.js';
 import displayProduct from './views/product.js';
 import displayPrice from './views/price.js';
+// import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient.js';
 
 
 // import exp from 'constants';
@@ -216,7 +217,6 @@ app.delete('/delete-list/:id', (req, res) => {
 // Update price
 app.put('/price/edit/:id/:total', async (req, res) => {
     try {
-        
         // const { price } = req.body;
         const { id, total } = req.params;
         
@@ -272,27 +272,28 @@ app.put('/edit-quantity/:listID/:itemId', async (req, res)=> {
 
 app.get('/edit-shop/:id/:shop', (req, res)=> {
     console.log('EDIT SHOP');
-    const { id, shop } = req.params;
+    const { listID, shop } = req.params;
     
-    res.send(displayShop(shop, id));  
+    res.send(displayShop(listID, shop));  
 });
 
 
 app.put('/edit-shop/:id', async (req, res)=> {
+    const { listID } = req.params;
+    const { newShop } = req.body;
+    
     try {
-        const { id } = req.params;
-        const { newShop } = req.body;
-        
         // Validate newShop is a valid string
         if(!newShop || typeof newShop !== 'string'){
             return res.status(400).send('Enter a valid shop')
         }
 
         // Update shop in shopping_list db
-        const updatedShop = await updateList(id, { shop: newShop});
+        await updateList(listID, { shop: newShop});
 
         // Fetch updated list from shopping_list db
-        const updatedList = await getList(id);
+        const updatedList = await getList(listID);
+        console.log('Updated list:', updatedList);
 
         res.send(displayList(updatedList));   
     } catch (error) {
@@ -313,26 +314,35 @@ app.get('/edit-product/:listID/:cartIndex', (req, res)=> {
 });
 
 
-app.put('/edit-product/:listID/:cartIndex', (req, res)=> {
+app.put('/edit-product/:listID/:cartIndex', async (req, res)=> {
+    
     console.log('EDIT PRODUCT PUT');
     const { listID, cartIndex } = req.params;
     const { newProduct } = req.body;
     
-    console.log('280 - listID:', listID);
-    console.log('281 - cartIndex:', cartIndex);
-    console.log('282 - newProduct:', newProduct);
-    
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    
-    list.cart[cartIndex].item = newProduct;
-    console.log(list);
-    console.log('288 - list.cart[cartIndex]:', list.cart[cartIndex]);
-    console.log('289 - list.cart[cartIndex].item:', list.cart[cartIndex].item);
-    console.log('290 - newProduct:', newProduct);
-    
-    res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
-});
+    try {
+        const { data: items, error: fetchError } = await supabase
+            .from('shopping_items')
+            .select('id')
+            .eq('list_id', listID)
+            .select()
+            .single();
 
+        console.log('items', items, typeof items );
+
+        if (fetchError || !items.id) {
+
+        }
+
+        list.cart[cartIndex].item = newProduct;
+        
+        res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
+    } catch (error) {
+        console.error('Error updating product:', error.message);
+        res.status(500).send('Internal server error');      
+    }
+});
+    
 
 app.get('/edit-price/:listID/:listTotal', (req, res) => {
     console.log('EDIT PRICE GET');

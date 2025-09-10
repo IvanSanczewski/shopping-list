@@ -1,4 +1,4 @@
-const displayShop = (shop, id) => /*html*/`
+const displayShop = (listID, shop) => /*html*/`
     <form class="edit-shop">
         <input
             type="text"
@@ -7,7 +7,7 @@ const displayShop = (shop, id) => /*html*/`
             placeholder="${shop}"
         >
         <button class="edit-shop-btn"
-            hx-put="/edit-shop/${id}"
+            hx-put="/edit-shop/${listID}"
             hx-target="closest li"
             hx-swap="outerHTML"
         >Edit shop
