@@ -115,7 +115,7 @@ app.post('/cards', async (req, res) => {
             };
 
             // Create new list in db
-            await createList(newListData);
+            await createList(newList);
 
             // Fetch all lists from db
             const allLists = await getAllLists();
@@ -270,7 +270,7 @@ app.put('/edit-quantity/:listID/:itemId', async (req, res)=> {
 
 
 
-app.get('/edit-shop/:id/:shop', (req, res)=> {
+app.get('/edit-shop/:listID/:shop', (req, res)=> {
     console.log('EDIT SHOP');
     const { listID, shop } = req.params;
     
@@ -278,7 +278,7 @@ app.get('/edit-shop/:id/:shop', (req, res)=> {
 });
 
 
-app.put('/edit-shop/:id', async (req, res)=> {
+app.put('/edit-shop/:listID', async (req, res)=> {
     const { listID } = req.params;
     const { newShop } = req.body;
     
@@ -315,10 +315,11 @@ app.get('/edit-product/:listID/:cartIndex', (req, res)=> {
 
 
 app.put('/edit-product/:listID/:cartIndex', async (req, res)=> {
-    
     console.log('EDIT PRODUCT PUT');
     const { listID, cartIndex } = req.params;
     const { newProduct } = req.body;
+    console.log('listID:', listID, typeof listID);
+    console.log('newProduct:', newProduct, typeof newProduct);
     
     try {
         const { data: items, error: fetchError } = await supabase

@@ -234,7 +234,7 @@ export async function toggleBoughtStatus(itemId) {
         if (error) throw error;
 
     } catch (error) {
-        console.error('Error toggling ${item} bought status:', error.message);
+        console.error(`Error toggling ${itemId} bought status:`, error.message);
         throw error;
     }
 }

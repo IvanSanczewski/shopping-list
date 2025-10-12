@@ -1,4 +1,4 @@
-import { getAllLists, getListById } from './db/shopping-service.js';
+import { getAllLists, getListById } from './shopping-service.js';
 
 // Simple test to verify our service layer works
 async function testService() {
@@ -9,7 +9,7 @@ async function testService() {
     console.log('📋 First list:', allLists[0]);
     
     console.log('\n🧪 Testing getListById...');
-    const singleList = await getListById('45_24');
+    const singleList = await getList('45_24');
     console.log('✅ Found list:', singleList.title);
     console.log('🛒 Cart items:', singleList.cart.length);
     
