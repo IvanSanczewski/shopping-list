@@ -195,13 +195,14 @@ export async function deleteItem(itemId) {
         const { error } = await supabase
             .from('shopping_items')
             .delete()
-            .eq('id', itemId)
+            .eq('id', itemId);
 
         if (error) throw error;
 
         return { success: true };
     } catch (error) {
-        console.error('Error deleting ${itemId}:', error.message); 
+        console.error(`Error deleting ${itemId}:`, error.message); 
+        throw error;
     }
 }
 

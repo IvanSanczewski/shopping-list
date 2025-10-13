@@ -1,9 +1,13 @@
-const displayCart = (cart, listID, cartIndex) => /*html*/`
+const displayCart = (cart, listID, itemID) => {
+    console.log('CART 2- cart:', cart);
+    console.log('CART 3- listID:', listID);
+    console.log('CART 4- itemID:', itemID);
+return /*html*/`
     <li class="cart-item ${cart.bought ? 'in-cart' : 'out-cart'}">
         <div class="item-details">
-            <span id="product-${listID}-${cartIndex}" class="item-product"
+            <span id="product-${listID}-${itemID}" class="item-product"
             hx-post="/toggle-item-status"
-            hx-vals='{"listID": "${listID}", "itemId": "${cart.id}"}'
+            hx-vals='{"listID": "${listID}", "itemId": "${itemID}"}'
             hx-target="closest li"
             hx-swap="outerHTML"
             style="cursor: pointer;"
@@ -11,7 +15,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
             
             ${cart.units ?
                 `<span class="item-units"   
-                hx-get="/edit-quantity/${listID}/${cart.id}/${cart.units}"
+                hx-get="/edit-quantity/${listID}/${itemID}/${cart.units}"
                 hx-target="this"
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
@@ -19,7 +23,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
                 >${cart.units}</span>` 
                 : 
                 `<span class="item-units"
-                hx-get="/edit-quantity/${listID}/${cart.id}/${cart.units}"
+                hx-get="/edit-quantity/${listID}/${itemID}/${cart.units}"
                 hx-target="this"
                 hx-swap="outerHTML"
                 style="cursor: pointer;"
@@ -31,8 +35,8 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
         <div class="item-buttons">
             <svg
                 class="edit-product-btn icon-action"
-                hx-get="/edit-product/${listID}/${cart.id}"
-                hx-target="#product-${listID}-${cartIndex}"
+                hx-get="/edit-product/${listID}/${itemID}"
+                hx-target="#product-${listID}-${itemID}"
                 hx-swap="outerHTML"
                 tabindex="0"
                 width="26" height="26" viewBox="0 0 24 24"
@@ -49,7 +53,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
 
             <svg
                 class="delete-item icon-action"
-                hx-delete="/delete-product/${listID}/${cart.id}"
+                hx-delete="/delete-product/${listID}/${itemID}"
                 hx-target="closest li"
                 hx-swap="outerHTML"
                 tabindex="0"
@@ -68,7 +72,7 @@ const displayCart = (cart, listID, cartIndex) => /*html*/`
                 <path d="M9 6V4h6v2"/>
             </svg>
         </div>
-    </li>
-`
+    </li>`;
+}
 
 export default displayCart;

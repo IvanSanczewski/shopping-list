@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
-import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList } from './shopping-service.js';
+import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList, deleteItem } from './shopping-service.js';
 import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import displayList from './views/list.js';
@@ -163,6 +163,7 @@ app.post('/toggle-item-status', async (req, res) => {
     try {
         // Extract the listID and item ID from db
         const { listID, itemId } = req.body;
+        console.log('TOGGLE 166 -  itemID:', itemId);
 
         // Toggle product status in db
         const updatedItem = await toggleBoughtStatus(itemId);
@@ -179,24 +180,19 @@ app.post('/toggle-item-status', async (req, res) => {
 // ***** D E L E T E  *****
 
 // Delete item using URL parameters
-app.delete('/delete-product/:listID/:cartIndex', (req, res) => {
-    const { listID, cartIndex } = req.params;
-    console.log('DELETE - listID:', listID, typeof listID);
-    console.log('DELETE - cartIndex:', cartIndex, typeof cartIndex);
-    
-    const list = SHOPPINGLISTS_DATA.find(list => list.id === listID);
-    console.log('DELETE - list found:', list);
-    
-    const indexNumber = parseInt(cartIndex);
-    
-    if (list && list.cart[indexNumber] !== undefined) {
-        console.log('Before deletion:', list.cart);
-        list.cart.splice(indexNumber, 1);
-        console.log('After deletion:', list.cart);
+app.delete('/delete-product/:listID/:itemID', async (req, res) => {
+    try {
+        const { listID, itemID } = req.params;
+        console.log('DELETE - listID:', listID, typeof listID);
+        console.log('DELETE - itemID:', itemID, typeof itemID);
+        
+        await deleteItem(itemID);
+        console.log(`${itemID} deleted successfully!`);
         res.send('');
-    } else {
-        console.log('Error: List or item not found');
-        res.status(404).send('Item not found');
+        
+    } catch (error) {
+        console.error('Error deleting product:', error.message);
+        res.status(500).send('Error deleting product');
     }
 });
 
