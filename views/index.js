@@ -34,7 +34,7 @@ const createHomepageTemplate = () => /*html*/`
         </main>
         
         <footer>
-            <h4>© Ivan Sanczewski, 2024</h4>
+            <h4>© Ivan Sanczewski, 2025</h4>
         </footer>
 
         <script>

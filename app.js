@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
-import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList, deleteItem } from './shopping-service.js';
+import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList, deleteItem, deleteList } from './shopping-service.js';
 import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import displayList from './views/list.js';
@@ -198,14 +198,20 @@ app.delete('/delete-product/:listID/:itemID', async (req, res) => {
 
 
 // Delete shopping list
-app.delete('/delete-list/:id', (req, res) => {
-    const { id } = req.params;
+app.delete('/delete-list/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        
+        await deleteList(id);
+        console.log(`The list ${id} has been successfully deleted!`);
+        res.send('');
+        
+    } catch (error) {
+        console.error(`Error deleting the list ${id}`, error.message);
+        res.status(500).send(`Error deleting the list ${id}`);
+    }
     
-    const list = SHOPPINGLISTS_DATA;
-    const index = SHOPPINGLISTS_DATA.findIndex(list => list.id === id);
-    list.splice(index, 1)
-    
-    res.send('');
+
 });
 
 // ***** U P D A T E  *****
