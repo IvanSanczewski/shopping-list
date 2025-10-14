@@ -299,44 +299,34 @@ app.put('/edit-shop/:listID', async (req, res)=> {
 });
 
 
-app.get('/edit-product/:listID/:cartIndex', (req, res)=> {
+app.get('/edit-product/:listID/:itemID', (req, res)=> {
     console.log('EDIT PRODUCT GET');
-    const { listID, cartIndex } = req.params;
+    const { listID, itemID } = req.params;
     
     console.log('268 - listID:', listID);
-    console.log('269 - cartIndex:', cartIndex);
+    console.log('269 - itemID:', itemID);
     
-    res.send(displayProduct(listID, cartIndex));
+    res.send(displayProduct(listID, itemID));
 });
 
 
-app.put('/edit-product/:listID/:cartIndex', async (req, res)=> {
+app.put('/edit-product/:listID/:itemID', async (req, res)=> {
     console.log('EDIT PRODUCT PUT');
-    const { listID, cartIndex } = req.params;
+    const { listID, itemID } = req.params;
     const { newProduct } = req.body;
     console.log('listID:', listID, typeof listID);
     console.log('newProduct:', newProduct, typeof newProduct);
     
     try {
-        const { data: items, error: fetchError } = await supabase
-            .from('shopping_items')
-            .select('id')
-            .eq('list_id', listID)
-            .select()
-            .single();
+        // Update the new item name in the DB
+        const updatedItem = await updateItem(itemID, { item: newProduct });
 
-        console.log('items', items, typeof items );
-
-        if (fetchError || !items.id) {
-
-        }
-
-        list.cart[cartIndex].item = newProduct;
+        // Send back the updated item name
+        res.send(displayCart(updatedItem, listID, itemID));
         
-        res.send(displayCart(list.cart[cartIndex], listID, cartIndex));
     } catch (error) {
         console.error('Error updating product:', error.message);
-        res.status(500).send('Internal server error');      
+        res.status(500).send('Error updating product');      
     }
 });
     

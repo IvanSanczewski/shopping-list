@@ -1,4 +1,4 @@
-const displayProduct = (listID, cartIndex) => /*html*/ `
+const displayProduct = (listID, itemID) => /*html*/ `
     <form class="edit-product">
         <input 
             type="text"
@@ -6,7 +6,7 @@ const displayProduct = (listID, cartIndex) => /*html*/ `
         >
         <svg
             class="edit-product-btn icon-action"
-            hx-put="/edit-product/${listID}/${cartIndex}"
+            hx-put="/edit-product/${listID}/${itemID}"
             hx-target="closest .cart-item"
             hx-swap="outerHTML"
             tabindex="0"

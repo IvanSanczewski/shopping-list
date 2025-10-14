@@ -32,7 +32,7 @@ return /*html*/`
     
     <div class="card-list">
         <ul>
-            ${list.cart.map((cart, index) => displayCart(cart, list.id, cart.id)).join('')}
+            ${list.cart.map((cart) => displayCart(cart, list.id, cart.id)).join('')}
         </ul>
         <form class="new-product" id="form-${list.id}">
             <input 
