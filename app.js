@@ -42,7 +42,7 @@ app.get('/cards', async (req, res) => {
     }
 });
 
-// Adds shopping items its cart
+// Adds shopping items to its cart
 app.post('/cart', async (req, res) => {
     try {
         const { listID, product, quantity} = req.body;
@@ -87,11 +87,8 @@ app.post('/cards', async (req, res) => {
         const actualWeekDay = format(now, 'i');
         
         console.log('actualWeekDay:', actualWeekDay);
-
-        // let isNextWeek;
-        // (nextWeekList)? isNextWeek = true : isNextWeek = false ;
         
-        let isNextWeek = !!nextWeekList; // Double bang coreces a boolean from truthy/falsy values
+        let isNextWeek = !!nextWeekList; // Double bang coerces a boolean from truthy/falsy values
         let weekId = (actualWeekDay === '7') ? Number(actualWeek -1) : Number(actualWeek);
         
         if (isNextWeek) { 
@@ -113,17 +110,19 @@ app.post('/cards', async (req, res) => {
                 total: 10,
                 weekday: 'Wednesday'
             };
+            console.log(newList);
 
             // Create new list in db
             await createList(newList);
 
             // Fetch all lists from db
+            
             const allLists = await getAllLists();
             res.send(displayCards(allLists));
             
         } else {
             console.log('list exists');
-            res.status(409).send('There is already a shopping list for this week. You can edit it or delete it and then create a new one.');
+            res.status(409).send('There is already a shopping list for this week. You can edit it. Or you can delete it, then create a new one.');
         }
 
     } catch (error) {
