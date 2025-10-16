@@ -28,36 +28,56 @@ const createHomepageTemplate = () => /*html*/`
                     <button class="btn-load"
                     hx-get="/cards"
                     hx-target="#shopping-lists-container"
-                    >Load lists
-                </button>
-            </div>
-        </main>
-        
-        <footer>
-            <h4>© Ivan Sanczewski, 2025</h4>
-        </footer>
+                    >Load lists</button>
+                    <ul class="cards-container"></ul>
+                </div>
 
-        <script>
-            // Theme switch logic
-            const themeToggle = document.getElementById('theme-toggle-slider');
-            // On load, set theme from localStorage
-            if (localStorage.getItem('theme') === 'dark') {
-                document.body.classList.add('dark-mode');
-                if (themeToggle) themeToggle.checked = true;
-            }
-            if (themeToggle) {
-                themeToggle.addEventListener('change', function() {
-                    if (this.checked) {
-                        document.body.classList.add('dark-mode');
-                        localStorage.setItem('theme', 'dark');
-                    } else {
-                        document.body.classList.remove('dark-mode');
-                        localStorage.setItem('theme', 'light');
-                    }
-                });
-            }
-          
-        </script>
+                <form class="new-week">
+                    <input 
+                        type="text"
+                        name="shop"
+                        placeholder="add shop"
+                        size="25"
+                    />
+                    <input 
+                        type="checkbox"
+                        name="nextWeekList"
+                        value=true
+                    />
+                    <label for="nextWeekList">Shopping list for next week</label>
+                    <button class="add-list"
+                        hx-post="/cards"
+                        hx-target=".cards-container"
+                        hx-swap="innerHTML"
+                    >Add List
+                    </button>
+                </form>
+            </main>
+        
+            <footer>
+                <h4>© Ivan Sanczewski, 2025</h4>
+            </footer>
+
+            <script>
+                // Theme switch logic
+                const themeToggle = document.getElementById('theme-toggle-slider');
+                // On load, set theme from localStorage
+                if (localStorage.getItem('theme') === 'dark') {
+                    document.body.classList.add('dark-mode');
+                    if (themeToggle) themeToggle.checked = true;
+                }
+                if (themeToggle) {
+                    themeToggle.addEventListener('change', function() {
+                        if (this.checked) {
+                            document.body.classList.add('dark-mode');
+                            localStorage.setItem('theme', 'dark');
+                        } else {
+                            document.body.classList.remove('dark-mode');
+                            localStorage.setItem('theme', 'light');
+                        }
+                    });
+                }
+            </script>
         </body>
     </html>
 `
