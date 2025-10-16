@@ -11,7 +11,7 @@ const supabase = createSupabaseClient();
 
 // Get all shopping lists with their items
 // this replaces the old SHOPPINGLISTS_DATA array
-
+        
 export async function getAllLists() {
     try {
         const { data, error } = await supabase
@@ -38,7 +38,6 @@ export async function getAllLists() {
 
 
 // Get a single shopping list using its ID with all its items
-
 export async function getList(listId) {
     try {
         const { data, error } = await supabase
@@ -66,7 +65,6 @@ export async function getList(listId) {
 
 
 // Create new shopping list
-
 export async function createList(listData) {
     try {
         const { data, error } = await supabase
@@ -74,6 +72,7 @@ export async function createList(listData) {
             .insert([{
                 id: listData.id,
                 title:listData.title,
+                total: listData.total,
                 shop:listData.shop,
                 weekday:listData.weekday,
             }])
@@ -95,7 +94,6 @@ export async function createList(listData) {
 
 
 // Update a shopping list
-
 export async function updateList(listId, updates) {
     try {
         const { data, error } = await supabase
@@ -115,8 +113,8 @@ export async function updateList(listId, updates) {
     }
 }
 
-// Delete a shopping list
 
+// Delete a shopping list
 export async function deleteList(listId) {
     try {
         // Delete all items first ???
@@ -138,6 +136,7 @@ export async function deleteList(listId) {
         throw error;
     }
 }
+
 
 //******* S H O P P I N G   I T E M S   O P E R A T I O N S *******//
 
@@ -166,8 +165,8 @@ export async function addItem(listId, item) {
     }
 }
 
-// Update item
 
+// Update item
 export async function updateItem(itemId, updates){
     try {
         const { data, error } = await supabase

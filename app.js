@@ -110,7 +110,7 @@ app.post('/cards', async (req, res) => {
                 total: 10,
                 weekday: 'Wednesday'
             };
-            console.log(newList);
+
 
             // Create new list in db
             await createList(newList);
@@ -260,7 +260,7 @@ app.put('/edit-quantity/:listID/:itemId', async (req, res)=> {
         }
         
         // Update units in shopping_items db
-        const updatedItemQuantity = await updateItem(itemId, { units: updatedQuantity});
+        const updatedItemQuantity = await updateItem(itemId, { units: updatedQuantity });
     
         res.send(displayCart(updatedItemQuantity, listID, itemId));
     } catch (error) {
@@ -290,7 +290,7 @@ app.put('/edit-shop/:listID', async (req, res)=> {
         }
 
         // Update shop in shopping_list db
-        await updateList(listID, { shop: newShop});
+        await updateList(listID, { shop: newShop });
 
         // Fetch updated list from shopping_list db
         const updatedList = await getList(listID);
@@ -346,22 +346,25 @@ app.get('/edit-price/:listID/:listTotal', (req, res) => {
     res.send(displayPrice(listID, listTotal));
 });
 
-app.put('/edit-price/:listID', (req, res) => {
-    console.log('EDIT PRICE PUT');
-    const { listID } = req.params;
-    const { newPrice } = req.body;
-    
-    console.log('316 - listID:', listID);
-    console.log('317 - newPrice:', newPrice, typeof newPrice);
-    
-    const newTotal = Number(newPrice);
-    console.log('320 - newTotal:', newTotal, typeof newTotal);
+app.put('/edit-price/:listID', async (req, res) => {
+    try {
+        console.log('EDIT PRICE PUT');
+        const { listID } = req.params;
+        const { newPrice } = req.body;
+        console.log('316 - listID:', listID);
+        console.log('317 - newPrice:', newPrice, typeof newPrice);
+        
+        const newTotal = Number(newPrice);
+        console.log('320 - newTotal:', newTotal, typeof newTotal);
+        
+        await updateList(listID, { total: newTotal });
+        const updatedList = await getList(listID);
+        res.send(displayList(updatedList));
 
-    const list = SHOPPINGLISTS_DATA.find(e =>e.id === listID);
-
-    list.total = newTotal;
-
-    res.send(displayList(list));
+    } catch (error) {
+        console.error('Error updating shopping list price:', error.message);
+        res.status(500).send('Error updating shopping list price');   
+    }
 });
 
 
