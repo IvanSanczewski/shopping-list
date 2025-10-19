@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 import createHomepageTemplate from './views/index.js';
 import SHOPPINGLISTS_DATA from './data/data.js';
-import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList, deleteItem, deleteList } from './shopping-service.js';
+import { getAllLists, createList, addItem, updateList, updateItem, toggleBoughtStatus, listExists, getList, deleteItem, deleteList, itemInListExists } from './shopping-service.js';
 import displayCards from './views/cards.js';
 import displayCart from './views/cart.js';
 import displayList from './views/list.js';
@@ -48,29 +48,39 @@ app.post('/cart', async (req, res) => {
     try {
         const { listID, product, quantity} = req.body;
 
-        // References the obbject in the DATA array according to list.id
-        if (product && quantity) {
-            const newProduct = {
-                item: product,
-                bought: false,
-                units: quantity
-            };
+        const productExists = await itemInListExists(listID, product);
 
-            // Adds item to db
-            const addedItem = await addItem(listID, newProduct);
+        if (!productExists){
 
-            // list.cart.push(newProduct);
-            res.set('HX-Trigger-After-Swap', JSON.stringify({
-            "resetForm": { "formId": `form-${listID}` }
-        }));
-        console.log('64 - New product is :', addedItem);
-        
-        // Arguments listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
-        res.send(displayCart(addedItem, listID, addedItem.id));
-        
+
+            // References the obbject in the DATA array according to list.id
+            if (product && quantity) {
+                const newProduct = {
+                    item: product,
+                    bought: false,
+                    units: quantity
+                };
+
+                // Adds item to db
+                const addedItem = await addItem(listID, newProduct);
+
+                // list.cart.push(newProduct);
+                res.set('HX-Trigger-After-Swap', JSON.stringify({
+                "resetForm": { "formId": `form-${listID}` }
+            }));
+            console.log('71 - New product is :', addedItem);
+            
+            // Arguments listID & list.cart.length-1 are needed in displayCart function for the toggle-item functionality to be available
+            res.send(displayCart(addedItem, listID, addedItem.id));
+            
+            } else {
+                res.status(400).send('Add product & quantity');
+            }
         } else {
-            res.status(400).send('Add product & quantity');
+            console.log('The product is already in the list. Plase update its quantity.');
+            res.status(409).send('This product is already in your cart. You can edit it if you want.');
         }
+
     } catch (error) {
         console.error('Error adding item to cart:', error.message);
         res.status(500).send('Error adding item to cart');
