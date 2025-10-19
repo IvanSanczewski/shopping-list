@@ -10,6 +10,7 @@ import displayCart from './views/cart.js';
 import displayList from './views/list.js';
 import displayQuantity from './views/quantity.js';
 import displayShop from './views/shop.js';
+import displayWeekday from './views/weekday.js';
 import displayProduct from './views/product.js';
 import displayPrice from './views/price.js';
 // import { SupabaseAuthClient } from '@supabase/supabase-js/dist/module/lib/SupabaseAuthClient.js';
@@ -291,6 +292,40 @@ app.put('/edit-shop/:listID', async (req, res)=> {
 
         // Update shop in shopping_list db
         await updateList(listID, { shop: newShop });
+
+        // Fetch updated list from shopping_list db
+        const updatedList = await getList(listID);
+        console.log('Updated list:', updatedList);
+
+        res.send(displayList(updatedList));   
+    } catch (error) {
+        console.error('Error updating the shop:', error.message);        
+        res.status(500).send('Error updating the shop');
+    }
+});
+
+
+app.get('/edit-weekday/:listID/:weekday', (req, res)=> {
+    console.log('EDIT WEEKDAY');
+    const { listID, weekday } = req.params;
+    
+    res.send(displayWeekday(listID, weekday));  
+});
+
+
+app.put('/edit-weekday/:listID', async (req, res)=> {
+    const { listID } = req.params;
+    const { newWeekday } = req.body;
+    console.log('319 - newWeekday:', newWeekday);
+
+    try {
+        // Validate newWeekday is a valid string
+        if(!newWeekday || typeof newWeekday !== 'string'){
+            return res.status(400).send('Enter a valid day of the week')
+        }
+
+        // Update weekday in shopping_list db
+        await updateList(listID, { weekday: newWeekday });
 
         // Fetch updated list from shopping_list db
         const updatedList = await getList(listID);

@@ -57,7 +57,14 @@ return /*html*/`
             
         </form>
         <p>
-            <span class="weekday">${list.weekday}</span>        
+            <span class="weekday"
+                hx-get="/edit-weekday/${list.id}/${list.weekday}"
+                hx-target="this"
+                hx-swap="outerHTML"
+                style="cursor: pointer;"
+                title="Edit weekday"
+            >${list.weekday}</span> 
+           -       
             <span class="shop"
                 hx-get="/edit-shop/${list.id}/${list.shop}"
                 hx-target="this"

@@ -14,7 +14,6 @@ const displayShop = (listID, shop) => /*html*/`
 
         </button>
     </form> 
-
 `
 
 export default displayShop;
