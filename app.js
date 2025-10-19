@@ -78,7 +78,7 @@ app.post('/cart', async (req, res) => {
             }
         } else {
             console.log('The product is already in the list. Plase update its quantity.');
-            res.status(409).send('This product is already in your cart. You can edit it if you want.');
+            res.status(500).send('This product is already in your cart. You can edit it if you want.');
         }
 
     } catch (error) {

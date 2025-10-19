@@ -242,12 +242,13 @@ export async function toggleBoughtStatus(itemId) {
 
 // Check if item exists
  
-export async function itemInListExists(listId, itemID) {
+export async function itemInListExists(listID, itemID) {
   try {
     const { data, error } = await supabase
       .from('shopping_items')
       .select('item', 'list_id')
-      .eq('id', listId)
+      .eq('list_id', listID)
+      .eq('item', itemID)
       .single();
 
     if (error && error.code !== 'PGRST116') { // PGRST116 is "not found"
@@ -256,7 +257,7 @@ export async function itemInListExists(listId, itemID) {
 
     return !!data;
   } catch (error) {
-    console.error(`Error checking if list exists ${listId}:`, error.message);
+    console.error(`Error checking if item ${itemID} esists in ${listID}:`, error.message);
     throw error;
   }
 }
